@@ -1,0 +1,40 @@
+{
+  "id": "voice-01-human-training-partner",
+  "version": "0.1",
+  "locale": "ja-JP",
+  "provider": {
+    "primary": "elevenlabs",
+    "design": "voice-design-v3",
+    "quality_model": "eleven_v3",
+    "realtime_model": "eleven_v3_conversational",
+    "fallback_audition": "gemini-3.1-flash-tts-preview"
+  },
+  "playback": {
+    "mode": "static-first",
+    "preload": "auto",
+    "dynamic_tts": false,
+    "browser_system_tts": false
+  },
+  "assets": {
+    "start": "/body-flow/media/voice/voice01/start.mp3",
+    "workStart": "/body-flow/media/voice/voice01/work-start.mp3",
+    "count3": "/body-flow/media/voice/voice01/count-3.mp3",
+    "rest": "/body-flow/media/voice/voice01/rest.mp3",
+    "next": "/body-flow/media/voice/voice01/next.mp3",
+    "recovery": "/body-flow/media/voice/voice01/recovery.mp3",
+    "finish": "/body-flow/media/voice/voice01/finish.mp3"
+  },
+  "casting": {
+    "status": "pending-audio-audition",
+    "hard_gate": "sounds-human-within-first-second",
+    "reject": [
+      "robotic",
+      "announcer-like",
+      "anime-like",
+      "customer-service-like",
+      "overly-cute",
+      "uniform-sentence-endings",
+      "unnatural-japanese-pauses"
+    ]
+  }
+}
