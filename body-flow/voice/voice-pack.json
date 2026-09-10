@@ -1,13 +1,16 @@
 {
-  "id": "voice-01-human-training-partner",
-  "version": "0.1",
+  "id": "voice-01-iroha-young-female",
+  "version": "0.2",
   "locale": "ja-JP",
   "provider": {
     "primary": "elevenlabs",
-    "design": "voice-design-v3",
+    "source": "voice-library",
+    "display_name": "Iroha",
+    "descriptor": "Young Female",
+    "voice_id": null,
     "quality_model": "eleven_v3",
-    "realtime_model": "eleven_v3_conversational",
-    "fallback_audition": "gemini-3.1-flash-tts-preview"
+    "humanity_fallback": "voice-changer-speech-to-speech",
+    "fallback_audition": "gemini-3.1-flash-tts"
   },
   "playback": {
     "mode": "static-first",
@@ -25,8 +28,11 @@
     "finish": "/body-flow/media/voice/voice01/finish.mp3"
   },
   "casting": {
-    "status": "pending-audio-audition",
+    "status": "candidate-selected-id-pending",
+    "selected_by": "MASA",
+    "selected_on": "2026-09-10",
     "hard_gate": "sounds-human-within-first-second",
+    "next_gate": "pin-exact-elevenlabs-voice-id-and-generate-core-cues",
     "reject": [
       "robotic",
       "announcer-like",
