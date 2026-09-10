@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0d1117"><title>BODY FLOW｜VOICE AUDITION</title>
+<style>
+:root{--bg:#0d1117;--panel:#151b23;--panel2:#1b2330;--text:#f4f7fb;--muted:#9ca9b8;--line:rgba(255,255,255,.1);--accent:#f6c85f;--ok:#74d99f}*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans",sans-serif;color:var(--text);background:linear-gradient(180deg,#111823,var(--bg) 42%)}button,input,textarea{font:inherit}.app{width:min(760px,100%);margin:auto;padding:max(20px,env(safe-area-inset-top)) 18px max(36px,env(safe-area-inset-bottom))}.eyebrow{font-size:12px;letter-spacing:.14em;color:var(--accent);font-weight:800}h1{margin:6px 0 8px;font-size:clamp(30px,9vw,48px)}h2{font-size:17px;margin:0 0 12px}.lead,.hint{color:var(--muted);line-height:1.65}.card{background:rgba(21,27,35,.96);border:1px solid var(--line);border-radius:20px;padding:18px;margin:14px 0}.candidate{display:grid;gap:10px}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:5px 9px;font-size:12px;color:var(--muted)}input[type=file]{width:100%;padding:11px;border-radius:13px;border:1px solid var(--line);background:var(--panel2);color:var(--text)}audio{width:100%}.score{display:grid;grid-template-columns:110px 1fr 34px;gap:8px;align-items:center;color:var(--muted);font-size:13px}.score input{width:100%}.num{color:var(--accent);font-weight:800;text-align:right}.primary,.secondary{width:100%;border-radius:16px;padding:14px;border:0;font-weight:900}.primary{background:var(--accent);color:#17130a}.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.winner{color:var(--ok);font-weight:900;font-size:20px}.script{white-space:pre-wrap;background:var(--panel2);border-radius:14px;padding:14px;color:var(--text);line-height:1.7}.back{color:var(--muted);text-decoration:none;font-size:13px}@media(max-width:480px){.grid{grid-template-columns:1fr}.score{grid-template-columns:96px 1fr 30px}}
+</style>
+</head>
+<body><main class="app">
+<div class="eyebrow">SUN LOVES FLOW / BODY</div><h1>VOICE AUDITION</h1><p class="lead">「可愛いAI」ではなく、iPhoneスピーカーから聞いても“人が横にいる”声を選ぶ。音源は端末内だけで再生され、アップロードされない。</p>
+<section class="card"><h2>① 同じ台詞で3声を作る</h2><div class="script" id="script">まさ、散歩おつかれ。\nじゃ、ちょっとだけやろっか。\n急がなくていいよ。フォームきれいに、あと3回。\nうん、いい感じ。肩の力抜いて。30秒だけ休も。\n次、お辞儀背中いこっか。\n今日はここまで。ちゃんと積み上がったよ。おつかれ。</div><p class="hint">ElevenLabs v3でまず Shizuka / Hinata / Otani を同じ文面で生成。声の名前を見ずに下でA/B/Cとして比較する。TTS感が残る場合はVoice Changer（Speech-to-Speech）へ切り替える。</p></section>
+<section id="candidates"></section>
+<section class="card"><h2>③ 勝者を決める</h2><div id="winner" class="winner">まだ採点していません</div><p class="hint">最優先は「人間っぽさ」。次に「近さ」、最後に「運動中ずっと聞けるか」。可愛さは加点要素で、機械感が出たら失格。</p><div class="grid"><button class="primary" id="judge">採点する</button><button class="secondary" id="reveal">候補名を表示</button></div><button class="secondary" id="copy" style="margin-top:10px">結果をコピーしてChatGPTへ</button><p id="status" class="hint"></p></section>
+<a class="back" href="./">← BODY FLOWへ戻る</a>
+</main>
+<script>
+(()=>{
+const defs=[['A','Shizuka','Natural and Soft'],['B','Hinata','Inviting, Smooth and Measured'],['C','Otani','Inviting, Clear and Measured']];
+const root=document.getElementById('candidates');let revealed=false;const urls={};
+root.innerHTML=defs.map(([id])=>`<section class="card candidate"><div><span class="pill">VOICE ${id}</span> <strong id="name${id}">候補名は非表示</strong></div><input id="file${id}" type="file" accept="audio/*"><audio id="audio${id}" controls playsinline></audio>${[['human','人間っぽさ'],['near','距離感'],['fit','運動適性']].map(([k,label])=>`<div class="score"><span>${label}</span><input id="${k}${id}" type="range" min="0" max="10" value="5"><span class="num" id="${k}${id}v">5</span></div>`).join('')}</section>`).join('');
+for(const [id] of defs){
+ const f=document.getElementById('file'+id),a=document.getElementById('audio'+id);f.onchange=()=>{if(urls[id])URL.revokeObjectURL(urls[id]);const file=f.files[0];if(file){urls[id]=URL.createObjectURL(file);a.src=urls[id]}};
+ for(const k of ['human','near','fit']){const r=document.getElementById(k+id),v=document.getElementById(k+id+'v');r.oninput=()=>v.textContent=r.value}
+}
+function scores(){return defs.map(([id,name])=>{const h=+document.getElementById('human'+id).value,n=+document.getElementById('near'+id).value,f=+document.getElementById('fit'+id).value;return{id,name,h,n,f,total:h*0.6+n*0.25+f*0.15}}).sort((a,b)=>b.total-a.total)}
+document.getElementById('judge').onclick=()=>{const s=scores();document.getElementById('winner').textContent=`VOICE ${s[0].id} が暫定1位｜${s[0].total.toFixed(1)} / 10`};
+document.getElementById('reveal').onclick=()=>{revealed=!revealed;for(const [id,name,desc] of defs)document.getElementById('name'+id).textContent=revealed?`${name}｜${desc}`:'候補名は非表示';document.getElementById('reveal').textContent=revealed?'候補名を隠す':'候補名を表示'};
+document.getElementById('copy').onclick=async()=>{const s=scores(),txt='BODY FLOW VOICE AUDITION\n'+s.map((x,i)=>`${i+1}. Voice ${x.id} / ${revealed?x.name:'blind'}｜人間 ${x.h}｜距離 ${x.n}｜運動 ${x.f}｜総合 ${x.total.toFixed(1)}`).join('\n')+'\n\n機械感が出た箇所：\n好きだった瞬間：\n変えたい点：';try{await navigator.clipboard.writeText(txt);document.getElementById('status').textContent='コピーした。ChatGPTへそのまま貼ってOK。'}catch(e){document.getElementById('status').textContent=txt}};
+})();
+</script></body></html>
