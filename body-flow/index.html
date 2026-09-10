@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0d1117" />
+  <title>BODY FLOW｜MASA Voice Trainer</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --panel: #151b23;
+      --panel-2: #1b2330;
+      --text: #f4f7fb;
+      --muted: #9ca9b8;
+      --line: rgba(255,255,255,.10);
+      --accent: #f6c85f;
+      --ok: #74d99f;
+      --danger: #ff8f8f;
+      --radius: 20px;
+    }
+    * { box-sizing: border-box; }
+    html { background: var(--bg); }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #111823 0%, var(--bg) 42%);
+    }
+    button, select, input, textarea { font: inherit; }
+    button { -webkit-tap-highlight-color: transparent; }
+    .app {
+      width: min(720px, 100%);
+      margin: 0 auto;
+      padding: max(20px, env(safe-area-inset-top)) 18px max(34px, env(safe-area-inset-bottom));
+    }
+    .eyebrow {
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-size: 12px;
+      color: var(--accent);
+      font-weight: 800;
+    }
+    h1 { margin: 6px 0 8px; font-size: clamp(30px, 9vw, 48px); line-height: 1; }
+    .lead { margin: 0 0 22px; color: var(--muted); line-height: 1.7; }
+    .card {
+      background: rgba(21, 27, 35, .96);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin: 14px 0;
+      box-shadow: 0 14px 38px rgba(0,0,0,.18);
+    }
+    .card h2 { margin: 0 0 12px; font-size: 17px; }
+    .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .space { justify-content: space-between; }
+    .toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .toggle input { width: 22px; height: 22px; accent-color: var(--accent); }
+    .mode-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .mode-btn, .voice-btn {
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      color: var(--text);
+      border-radius: 15px;
+      padding: 13px 10px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .mode-btn.active, .voice-btn.active {
+      border-color: var(--accent);
+      box-shadow: inset 0 0 0 1px var(--accent);
+      color: var(--accent);
+    }
+    .voice-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
+    .voice-btn { padding: 10px 5px; font-size: 12px; }
+    select {
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 13px;
+      border: 1px solid var(--line);
+      color: var(--text);
+      background: var(--panel-2);
+    }
+    .walk-btn, .primary, .secondary, .danger {
+      width: 100%;
+      border: 0;
+      border-radius: 17px;
+      padding: 17px 16px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .walk-btn, .primary { background: var(--accent); color: #17130a; }
+    .secondary { background: var(--panel-2); color: var(--text); border: 1px solid var(--line); }
+    .danger { background: rgba(255,143,143,.10); color: var(--danger); border: 1px solid rgba(255,143,143,.25); }
+    .hint { color: var(--muted); font-size: 13px; line-height: 1.6; margin-top: 10px; }
+    .session { display: none; }
+    .session.show { display: block; }
+    .phase { color: var(--accent); font-size: 13px; font-weight: 900; letter-spacing: .08em; }
+    .exercise { font-size: clamp(28px, 8vw, 42px); font-weight: 900; line-height: 1.1; margin: 9px 0; }
+    .target { color: var(--muted); font-size: 16px; }
+    .timer { font-size: clamp(62px, 20vw, 104px); font-weight: 900; line-height: 1; margin: 22px 0 10px; font-variant-numeric: tabular-nums; }
+    .progress { height: 7px; border-radius: 999px; background: #26303d; overflow: hidden; }
+    .progress > div { height: 100%; width: 0%; background: var(--accent); transition: width .25s linear; }
+    .cue { min-height: 48px; color: var(--muted); line-height: 1.6; margin: 14px 0; }
+    .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .full { grid-column: 1 / -1; }
+    .log { display: none; }
+    .log.show { display: block; }
+    label.small { display: block; margin: 12px 0 5px; color: var(--muted); font-size: 13px; }
+    input[type="number"], input[type="text"], textarea {
+      width: 100%; border: 1px solid var(--line); background: var(--panel-2); color: var(--text);
+      border-radius: 13px; padding: 12px;
+    }
+    textarea { min-height: 72px; resize: vertical; }
+    .history { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .badge { display: inline-block; border: 1px solid var(--line); border-radius: 999px; padding: 5px 9px; font-size: 12px; color: var(--muted); }
+    .status { color: var(--ok); font-weight: 800; font-size: 13px; }
+    @media (max-width: 420px) {
+      .voice-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <div class="eyebrow">Sun Loves Flow / Body</div>
+    <h1>BODY FLOW</h1>
+    <p class="lead">MAHRUとの散歩をスイッチに、20分だけ身体を育てる。画面を見続けなくても、声が次を案内する。</p>
+
+    <section id="setup">
+      <div class="card">
+        <div class="row space">
+          <h2>① 今日の状態</h2>
+          <span class="badge" id="dayLabel"></span>
+        </div>
+        <label class="toggle">
+          <input id="aitanToggle" type="checkbox" />
+          <span>今日はアイタン勤務日</span>
+        </label>
+        <p class="hint">ONにすると主トレではなくRECOVERYを優先。仕事もトレーニング負荷として扱う。</p>
+      </div>
+
+      <div class="card">
+        <h2>② 今日のメニュー</h2>
+        <div class="mode-grid" id="routineButtons">
+          <button class="mode-btn" data-routine="upper">上半身</button>
+          <button class="mode-btn" data-routine="lower">下半身</button>
+          <button class="mode-btn" data-routine="full">全身</button>
+          <button class="mode-btn" data-routine="recovery">RECOVERY</button>
+        </div>
+        <p class="hint" id="routineSummary"></p>
+      </div>
+
+      <div class="card">
+        <h2>③ 声のモード</h2>
+        <div class="voice-grid" id="voiceModeButtons">
+          <button class="voice-btn active" data-voice-mode="sweet">SWEET</button>
+          <button class="voice-btn" data-voice-mode="athlete">ATHLETE</button>
+          <button class="voice-btn" data-voice-mode="recovery">RECOVERY</button>
+          <button class="voice-btn" data-voice-mode="playful">PLAYFUL</button>
+        </div>
+        <select id="voiceSelect" aria-label="音声を選択">
+          <option value="">日本語音声を自動選択</option>
+        </select>
+        <div class="row space" style="margin-top:12px">
+          <label class="toggle"><input id="voiceToggle" type="checkbox" checked />音声ON</label>
+          <button id="voiceTest" class="secondary" style="width:auto;padding:10px 14px">声を試す</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>④ MAHRUと散歩</h2>
+        <button id="walkDone" class="walk-btn">🐾 MAHRU散歩おわった → START</button>
+        <p class="hint">散歩をウォームアップにする。帰宅後5分以内に押すのがBODY FLOWの開始条件。</p>
+      </div>
+    </section>
+
+    <section id="session" class="session">
+      <div class="card">
+        <div class="row space"><span class="phase" id="phaseLabel">WORK</span><span class="status" id="stepLabel"></span></div>
+        <div class="exercise" id="exerciseName"></div>
+        <div class="target" id="exerciseTarget"></div>
+        <div class="timer" id="timer">00:00</div>
+        <div class="progress"><div id="progressBar"></div></div>
+        <div class="cue" id="cue"></div>
+        <div class="controls">
+          <button id="pauseBtn" class="secondary">一時停止</button>
+          <button id="skipBtn" class="secondary">次へ</button>
+          <button id="stopBtn" class="danger full">今日はここまで</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="log" class="log">
+      <div class="card">
+        <h2>30秒ログ</h2>
+        <p class="hint">評価ではなく観察。次回の負荷調整に使う。</p>
+        <label class="small" for="effort">体感強度 1〜10</label>
+        <input id="effort" type="number" min="1" max="10" inputmode="numeric" placeholder="7" />
+        <label class="small" for="pain">痛み／違和感</label>
+        <input id="pain" type="text" placeholder="なし / 右肩少し など" />
+        <label class="small" for="note">一言</label>
+        <textarea id="note" placeholder="今日の身体はどうだった？"></textarea>
+        <button id="saveLog" class="primary" style="margin-top:14px">ログを保存</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="row space"><h2>最近のBODY FLOW</h2><button id="clearLogs" class="secondary" style="width:auto;padding:9px 12px">履歴消去</button></div>
+      <div id="history" class="history">まだログはありません。</div>
+    </section>
+  </main>
+
+<script>
+(() => {
+  const routines = {
+    upper: {
+      label: '上半身', summary: '胸・肩・背中・体幹｜約20〜25分',
+      exercises: [
+        ['プッシュアップ', '10回', 42, 45, 3, '胸を落とすより、身体を一本に。あと2回残す。'],
+        ['パイクプッシュアップ', '8回', 38, 50, 3, '頭頂を床へ。肩に乗せる。首はすくめない。'],
+        ['お辞儀背中', '12回', 72, 40, 3, '3秒で倒す、1秒止める、3秒で戻す。胸は潰さない。'],
+        ['ナロープッシュアップ', '8回', 36, 45, 2, '肘を開きすぎず、丁寧に。'],
+        ['プランク', '45秒', 45, 30, 2, '呼吸を止めず、みぞおちと骨盤をつなぐ。']
+      ]
+    },
+    lower: {
+      label: '下半身', summary: '脚・尻・体幹｜約20〜25分',
+      exercises: [
+        ['ブルガリアンスクワット右', '10回', 45, 20, 3, '前脚の足裏全体で床を押す。'],
+        ['ブルガリアンスクワット左', '10回', 45, 45, 3, '膝とつま先の方向をそろえる。'],
+        ['スロースクワット', '15回', 60, 45, 3, '股関節から座る。反動ではなくコントロール。'],
+        ['シングルレッグヒップリフト右', '15回', 48, 20, 3, '腰を反らず、お尻で持ち上げる。'],
+        ['シングルレッグヒップリフト左', '15回', 48, 40, 3, '骨盤を水平に。'],
+        ['サイドプランク右', '35秒', 35, 15, 2, '頭から足まで長く。'],
+        ['サイドプランク左', '35秒', 35, 30, 2, '呼吸を続ける。']
+      ]
+    },
+    full: {
+      label: '全身', summary: '肩・胸・背中・脚・尻｜約25〜30分',
+      exercises: [
+        ['プッシュアップ', '10回', 42, 40, 3, '身体を一本に。'],
+        ['パイクプッシュアップ', '8回', 38, 45, 3, '肩に体重を乗せる。'],
+        ['お辞儀背中', '12回', 72, 40, 3, '指先を遠く、肩甲骨は軽く中央へ。'],
+        ['ブルガリアンスクワット右', '10回', 45, 15, 3, '足裏全体で押す。'],
+        ['ブルガリアンスクワット左', '10回', 45, 40, 3, '骨盤を安定させる。'],
+        ['ヒップリフト', '15回', 48, 40, 3, 'お尻で上げる。'],
+        ['プランク', '45秒', 45, 30, 2, '呼吸しながら全身をつなぐ。']
+      ]
+    },
+    recovery: {
+      label: 'RECOVERY', summary: '背中・肩甲骨・軽い体幹｜約8〜10分',
+      exercises: [
+        ['お辞儀背中', '10回', 60, 25, 2, '軽く動かして背中を起こす。'],
+        ['肩甲骨モビリティ', '60秒', 60, 20, 1, '大きく、痛くない範囲で。'],
+        ['軽いプッシュアップ', '8回', 32, 30, 2, '余裕を残して終了。'],
+        ['デッドバグ or プランク', '60秒', 60, 20, 1, '呼吸と体幹をつなぐ。'],
+        ['呼吸・ストレッチ', '2分', 120, 0, 1, '吐く息を長めに。今日は整えて終える。']
+      ]
+    }
+  };
+
+  const phrases = {
+    sweet: {
+      start: ['まさ、今日も少しだけ積み上げよ。', '散歩おつかれさま。ここから身体つくろっか。'],
+      rest: ['いい感じ。肩の力抜いて休も。', 'ナイス。次に備えて呼吸しよ。'],
+      finish: ['おわり。今日も身体にちゃんと積み上がったよ。', '完了。やりすぎないのも強さだよ。']
+    },
+    athlete: {
+      start: ['セッション開始。フォーム優先。一本ずつ積む。'],
+      rest: ['セット完了。呼吸を整えて次へ。'],
+      finish: ['セッション完了。今日の刺激を回復につなげる。']
+    },
+    recovery: {
+      start: ['今日は整える日。頑張りすぎ禁止。'],
+      rest: ['力を抜いて大丈夫。回復もトレーニング。'],
+      finish: ['今日はここまで。回復して強くなろ。']
+    },
+    playful: {
+      start: ['まさ、散歩で終わった気になってないよね。あとちょい行こ。'],
+      rest: ['はい休憩。まだ逃げんでええよ。'],
+      finish: ['えらい。今日のまさ、ちゃんと仕事した。']
+    }
+  };
+
+  let routineKey = suggestRoutine();
+  let voiceMode = 'sweet';
+  let steps = [];
+  let stepIndex = 0;
+  let phase = 'work';
+  let remaining = 0;
+  let phaseTotal = 1;
+  let timerId = null;
+  let paused = false;
+  let sessionStartedAt = null;
+  let wakeLock = null;
+
+  const $ = id => document.getElementById(id);
+  const routineButtons = [...document.querySelectorAll('.mode-btn')];
+  const voiceButtons = [...document.querySelectorAll('.voice-btn')];
+
+  function suggestRoutine() {
+    const day = new Date().getDay();
+    if (day === 1) return 'upper';
+    if (day === 2) return 'lower';
+    if (day === 6) return 'full';
+    return 'recovery';
+  }
+
+  function syncSetup() {
+    const names = ['日','月','火','水','木','金','土'];
+    $('dayLabel').textContent = `${names[new Date().getDay()]}曜日`;
+    routineButtons.forEach(b => b.classList.toggle('active', b.dataset.routine === routineKey));
+    $('routineSummary').textContent = routines[routineKey].summary;
+  }
+
+  routineButtons.forEach(btn => btn.addEventListener('click', () => {
+    routineKey = btn.dataset.routine;
+    $('aitanToggle').checked = routineKey === 'recovery' ? $('aitanToggle').checked : false;
+    syncSetup();
+  }));
+
+  $('aitanToggle').addEventListener('change', e => {
+    if (e.target.checked) routineKey = 'recovery';
+    else routineKey = suggestRoutine();
+    syncSetup();
+  });
+
+  voiceButtons.forEach(btn => btn.addEventListener('click', () => {
+    voiceMode = btn.dataset.voiceMode;
+    voiceButtons.forEach(b => b.classList.toggle('active', b === btn));
+  }));
+
+  function loadVoices() {
+    const select = $('voiceSelect');
+    const old = select.value;
+    const jp = speechSynthesis.getVoices().filter(v => /^ja(-|_)/i.test(v.lang));
+    select.innerHTML = '<option value="">日本語音声を自動選択</option>' + jp.map(v => `<option value="${escapeHtml(v.name)}">${escapeHtml(v.name)} (${v.lang})</option>`).join('');
+    if ([...select.options].some(o => o.value === old)) select.value = old;
+  }
+
+  function escapeHtml(s) { return s.replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
+  loadVoices();
+  if ('speechSynthesis' in window) speechSynthesis.onvoiceschanged = loadVoices;
+
+  function speak(text) {
+    if (!$('voiceToggle').checked || !('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'ja-JP';
+    u.rate = voiceMode === 'athlete' ? 1.08 : 1.0;
+    u.pitch = voiceMode === 'sweet' ? 1.35 : voiceMode === 'playful' ? 1.22 : 1.05;
+    const voices = speechSynthesis.getVoices();
+    const selected = $('voiceSelect').value;
+    u.voice = voices.find(v => v.name === selected) || voices.find(v => /^ja(-|_)/i.test(v.lang)) || null;
+    speechSynthesis.speak(u);
+  }
+
+  function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+  $('voiceTest').addEventListener('click', () => speak(pick(phrases[voiceMode].start)));
+
+  function buildSteps(key) {
+    const out = [];
+    routines[key].exercises.forEach(([name,target,work,rest,sets,cue]) => {
+      for (let set = 1; set <= sets; set++) out.push({ name, target, work, rest, set, sets, cue });
+    });
+    return out;
+  }
+
+  async function requestWakeLock() {
+    try { if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen'); } catch (_) {}
+  }
+
+  $('walkDone').addEventListener('click', async () => {
+    steps = buildSteps(routineKey);
+    stepIndex = 0;
+    sessionStartedAt = new Date();
+    $('setup').style.display = 'none';
+    $('session').classList.add('show');
+    $('log').classList.remove('show');
+    await requestWakeLock();
+    speak(pick(phrases[voiceMode].start));
+    setTimeout(() => startWork(), 850);
+  });
+
+  function startWork() {
+    clearInterval(timerId);
+    if (stepIndex >= steps.length) return finishSession();
+    phase = 'work';
+    paused = false;
+    const s = steps[stepIndex];
+    remaining = s.work;
+    phaseTotal = s.work;
+    $('phaseLabel').textContent = 'WORK';
+    $('exerciseName').textContent = s.name;
+    $('exerciseTarget').textContent = `${s.target} ｜ ${s.set}/${s.sets} SET`;
+    $('stepLabel').textContent = `${stepIndex + 1}/${steps.length}`;
+    $('cue').textContent = s.cue;
+    $('pauseBtn').textContent = '一時停止';
+    speak(`${s.name}。${s.target}。セット${s.set}。${s.cue}`);
+    renderTimer();
+    timerId = setInterval(tick, 1000);
+  }
+
+  function startRest() {
+    const s = steps[stepIndex];
+    if (!s.rest) { stepIndex++; return startWork(); }
+    clearInterval(timerId);
+    phase = 'rest';
+    remaining = s.rest;
+    phaseTotal = s.rest;
+    $('phaseLabel').textContent = 'REST';
+    $('exerciseName').textContent = '休憩';
+    $('exerciseTarget').textContent = `次：${steps[stepIndex + 1]?.name || 'FINISH'}`;
+    $('cue').textContent = '呼吸を整える。水分は少量ずつ。';
+    speak(pick(phrases[voiceMode].rest) + (steps[stepIndex + 1] ? ` 次は${steps[stepIndex + 1].name}。` : ''));
+    renderTimer();
+    timerId = setInterval(tick, 1000);
+  }
+
+  function tick() {
+    if (paused) return;
+    remaining--;
+    if (remaining === 10) speak('あと10秒。');
+    if (remaining <= 0) {
+      if (phase === 'work') startRest();
+      else { stepIndex++; startWork(); }
+      return;
+    }
+    renderTimer();
+  }
+
+  function renderTimer() {
+    const m = String(Math.floor(Math.max(0, remaining) / 60)).padStart(2,'0');
+    const s = String(Math.max(0, remaining) % 60).padStart(2,'0');
+    $('timer').textContent = `${m}:${s}`;
+    const pct = phaseTotal ? 100 * (1 - remaining / phaseTotal) : 0;
+    $('progressBar').style.width = `${Math.min(100, Math.max(0, pct))}%`;
+  }
+
+  $('pauseBtn').addEventListener('click', () => {
+    paused = !paused;
+    $('pauseBtn').textContent = paused ? '再開' : '一時停止';
+    if (paused) speechSynthesis.cancel();
+    else speak('再開するよ。');
+  });
+
+  $('skipBtn').addEventListener('click', () => {
+    if (phase === 'work') startRest();
+    else { stepIndex++; startWork(); }
+  });
+
+  $('stopBtn').addEventListener('click', () => finishSession(true));
+
+  function finishSession(stopped = false) {
+    clearInterval(timerId);
+    speechSynthesis.cancel();
+    if (!stopped) speak(pick(phrases[voiceMode].finish));
+    else speak('今日はここまで。無理せず回復につなげよ。');
+    $('session').classList.remove('show');
+    $('log').classList.add('show');
+    if (wakeLock) { try { wakeLock.release(); } catch (_) {} wakeLock = null; }
+  }
+
+  $('saveLog').addEventListener('click', () => {
+    const logs = JSON.parse(localStorage.getItem('bodyFlowLogs') || '[]');
+    const log = {
+      date: new Date().toISOString(),
+      routine: routines[routineKey].label,
+      effort: $('effort').value || '-',
+      pain: $('pain').value.trim() || 'なし',
+      note: $('note').value.trim() || '',
+      minutes: sessionStartedAt ? Math.max(1, Math.round((Date.now() - sessionStartedAt.getTime()) / 60000)) : '-'
+    };
+    logs.unshift(log);
+    localStorage.setItem('bodyFlowLogs', JSON.stringify(logs.slice(0, 35)));
+    $('effort').value = ''; $('pain').value = ''; $('note').value = '';
+    $('log').classList.remove('show');
+    $('setup').style.display = '';
+    renderHistory();
+    speak('ログ保存。今日のBODY FLOW、完了。');
+  });
+
+  $('clearLogs').addEventListener('click', () => {
+    if (confirm('BODY FLOWの端末内ログを消去しますか？')) {
+      localStorage.removeItem('bodyFlowLogs'); renderHistory();
+    }
+  });
+
+  function renderHistory() {
+    const logs = JSON.parse(localStorage.getItem('bodyFlowLogs') || '[]');
+    if (!logs.length) { $('history').textContent = 'まだログはありません。'; return; }
+    $('history').innerHTML = logs.slice(0, 5).map(l => {
+      const d = new Date(l.date);
+      return `<div style="padding:9px 0;border-bottom:1px solid var(--line)"><strong style="color:var(--text)">${d.getMonth()+1}/${d.getDate()} ${escapeHtml(l.routine)}</strong>｜強度 ${escapeHtml(String(l.effort))}｜${escapeHtml(String(l.minutes))}分<br>違和感：${escapeHtml(l.pain)}${l.note ? `<br>${escapeHtml(l.note)}` : ''}</div>`;
+    }).join('');
+  }
+
+  document.addEventListener('visibilitychange', async () => {
+    if (document.visibilityState === 'visible' && $('session').classList.contains('show')) await requestWakeLock();
+  });
+
+  syncSetup();
+  renderHistory();
+})();
+</script>
+</body>
+</html>
