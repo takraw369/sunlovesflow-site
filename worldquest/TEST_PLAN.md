@@ -9,7 +9,7 @@
 - 認証なし / Supabaseなし / 外部書込APIなし。
 - 観測ログは端末localStorageのみ。
 - 外部通信はユーザーが明示的に `世界へ出発する` で開く観測サイトと、OS共有UIを使う場合のみ。
-- 既存 `/quest/`、`/body-flow/`、トップページは変更しない。
+- WORLD QUEST以外のroute / auth / LINE / backendは変更しない。
 
 ## v0.1 → v0.2 migration gate
 1. v0.1でDay 1にログを保存し、Questを1件完了した状態を用意する。
@@ -57,11 +57,12 @@
 
 ## Production regression
 Merge後に最低限以下をliveで再確認する。
-1. `https://sunlovesflow.com/` が200相当で既存トップを表示。
+1. `https://sunlovesflow.com/` が既存トップを表示。
 2. `https://sunlovesflow.com/worldquest/` がv0.2を表示。
-3. `/quest/` と `/body-flow/` の既存routeを壊していない。
+3. WORLD QUEST以外の既存公開挙動がmain直前状態から変わっていない。
 4. Cloudflare Pages technical fallbackでも同じWORLD QUESTが取得できる。
-5. `www.sunlovesflow.com` は別domain taskとして扱い、未接続ならWORLD QUEST releaseと混ぜない。
+5. `/quest/` と `/body-flow/` は2026-09-16時点で専用タイトルを返す本番routeとは確認できていないため、存在をDone条件にしない。変更前後で同じ公開挙動かだけ比較する。
+6. `www.sunlovesflow.com` は別domain taskとして扱い、未接続ならWORLD QUEST releaseと混ぜない。
 
 ## v0.3 candidates — real use後だけ判断
 - Share Card画像生成
