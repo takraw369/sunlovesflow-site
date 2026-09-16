@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#08111f" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>WORLD QUEST｜世界を旅して、常識を再編集する</title>
+  <style>
+    :root{
+      --bg:#08111f;--bg2:#0d1830;--panel:#111d34;--panel2:#17243e;--text:#f7f2df;
+      --muted:#9cabc5;--line:rgba(255,255,255,.10);--gold:#f2c15d;--sky:#80c7ff;--ok:#76d6a3;
+      --danger:#ff9a9a;--radius:22px;--shadow:0 18px 55px rgba(0,0,0,.28)
+    }
+    *{box-sizing:border-box}html{background:var(--bg);scroll-behavior:smooth}body{margin:0;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Noto Sans JP",sans-serif;color:var(--text);background:radial-gradient(circle at 50% -10%,rgba(79,126,199,.20),transparent 36%),linear-gradient(180deg,var(--bg2),var(--bg) 48%)}
+    a{color:inherit}.app{width:min(860px,100%);margin:0 auto;padding:max(18px,env(safe-area-inset-top)) 18px max(42px,env(safe-area-inset-bottom))}.top{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:18px}.brand{font-weight:900;letter-spacing:.08em}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:.18em}.level{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:12px}.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:7px 10px;background:rgba(255,255,255,.035)}
+    .hero{padding:26px 0 20px}.eyebrow{color:var(--gold);font-weight:900;letter-spacing:.16em;font-size:12px;text-transform:uppercase}.hero h1{font-size:clamp(38px,12vw,76px);line-height:.92;letter-spacing:-.045em;margin:10px 0 14px}.hero h1 span{display:block;color:var(--gold)}.lead{font-size:clamp(16px,4.4vw,21px);line-height:1.7;margin:0;color:#dce5f4;max-width:720px}.sublead{color:var(--muted);line-height:1.7;margin:10px 0 0}
+    .progress-wrap{margin:18px 0 0}.progress-meta{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-bottom:7px}.progress{height:8px;background:#1d2b47;border-radius:999px;overflow:hidden}.progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--gold),#ffe19a);transition:width .25s ease}
+    .grid{display:grid;grid-template-columns:1.25fr .75fr;gap:14px}.card{background:rgba(17,29,52,.94);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}.card h2,.card h3{margin:0}.quest-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}.day{color:var(--gold);font-weight:900;font-size:13px;letter-spacing:.08em}.quest-title{font-size:clamp(27px,7vw,40px);line-height:1.05;margin:5px 0 9px;font-weight:950}.category{color:var(--sky);font-size:12px;font-weight:800}.mission{color:#dbe4f3;line-height:1.7;margin:14px 0}.prompt{background:var(--panel2);border:1px solid var(--line);border-radius:17px;padding:14px;margin:12px 0}.prompt b{display:block;font-size:12px;color:var(--gold);letter-spacing:.08em;margin-bottom:6px}.prompt p{margin:0;line-height:1.65;color:#edf2f9}
+    .launch,.primary,.secondary,.ghost{font:inherit;border-radius:16px;padding:15px 16px;font-weight:900;cursor:pointer}.launch,.primary{border:0;background:var(--gold);color:#1b1407}.secondary{border:1px solid var(--line);background:var(--panel2);color:var(--text)}.ghost{border:1px solid var(--line);background:transparent;color:var(--muted)}.launch{width:100%;display:flex;align-items:center;justify-content:center;text-decoration:none;margin-top:14px}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.full{grid-column:1/-1}.launch:hover,.primary:hover{filter:brightness(1.05)}
+    .side-title{font-size:13px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}.stat{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.stat:last-child{border-bottom:0}.stat b{font-size:18px}.stat span{color:var(--muted);font-size:13px}.badge-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.badge{font-size:11px;border-radius:999px;padding:7px 9px;border:1px solid var(--line);color:var(--muted)}.badge.on{border-color:rgba(242,193,93,.48);color:var(--gold);background:rgba(242,193,93,.07)}
+    .journal{margin-top:14px}.journal .card{box-shadow:none}label{display:block;color:var(--muted);font-size:12px;font-weight:800;margin:14px 0 6px}textarea{width:100%;min-height:92px;resize:vertical;border:1px solid var(--line);border-radius:14px;background:#0d172a;color:var(--text);padding:13px;font:inherit;line-height:1.6}.saved{color:var(--ok);font-size:12px;min-height:18px;margin-top:8px}.small{color:var(--muted);font-size:12px;line-height:1.6}.section-title{font-size:21px;margin:0 0 5px}.phase-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}.phase{border:1px solid var(--line);border-radius:14px;padding:11px 9px;background:rgba(255,255,255,.025);font-size:11px;color:var(--muted);line-height:1.4}.phase strong{display:block;color:var(--text);margin-bottom:2px}.phase.active{border-color:rgba(128,199,255,.45);background:rgba(128,199,255,.06)}
+    .footer{padding:28px 4px 8px;color:var(--muted);font-size:12px;line-height:1.7;text-align:center}.reset{margin-top:12px;background:none;border:0;color:#72819d;text-decoration:underline;cursor:pointer;font:inherit;font-size:11px}
+    @media(max-width:720px){.grid{grid-template-columns:1fr}.phase-grid{grid-template-columns:1fr}.phase{display:flex;justify-content:space-between;align-items:center}.top{align-items:flex-start}.hero{padding-top:12px}.card{padding:17px}.buttons{grid-template-columns:1fr}.full{grid-column:auto}}
+  </style>
+</head>
+<body>
+<main class="app">
+  <header class="top">
+    <div class="brand">SUN LOVES FLOW<small>WORLD OBSERVATORY</small></div>
+    <div class="level"><span class="pill">🌍 <b id="levelLabel">Observer Lv.1</b></span></div>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">WORLD QUEST / 30 DAYS</div>
+    <h1>世界を旅して、<span>常識を再編集する。</span></h1>
+    <p class="lead">日本の当たり前を否定するのではなく、世界の別の前提を知り、自分で選び直す30日。</p>
+    <p class="sublead">見る → 比べる → 問う → 再定義する → 動く。正解数ではなく「視点が増えた数」が経験値になる。</p>
+    <div class="progress-wrap">
+      <div class="progress-meta"><span id="progressText">0 / 30 QUEST</span><span id="xpText">0 XP</span></div>
+      <div class="progress"><div id="progressBar"></div></div>
+    </div>
+  </section>
+
+  <section class="grid">
+    <article class="card">
+      <div class="quest-head">
+        <div><div class="day" id="dayLabel">DAY 1</div><div class="quest-title" id="questTitle"></div><div class="category" id="questCategory"></div></div>
+        <span class="pill" id="questXp">+10 XP</span>
+      </div>
+      <p class="mission" id="questMission"></p>
+      <div class="prompt"><b>👀 OBSERVE｜見る</b><p id="observe"></p></div>
+      <div class="prompt"><b>🇯🇵 COMPARE｜比べる</b><p id="compare"></p></div>
+      <div class="prompt"><b>❓ QUESTION｜問う</b><p id="question"></p></div>
+      <div class="prompt"><b>🧭 REFRAME｜再定義</b><p id="reframe"></p></div>
+      <a id="launch" class="launch" target="_blank" rel="noopener noreferrer">🌍 世界へ出発する ↗</a>
+      <div class="buttons">
+        <button id="prevBtn" class="secondary">← 前のQuest</button>
+        <button id="nextBtn" class="secondary">次のQuest →</button>
+      </div>
+    </article>
+
+    <aside class="card">
+      <div class="side-title">WORLD PASSPORT</div>
+      <div class="stat"><span>完了Quest</span><b id="doneStat">0</b></div>
+      <div class="stat"><span>Perspective</span><b id="perspectiveStat">0</b></div>
+      <div class="stat"><span>Update</span><b id="updateStat">0</b></div>
+      <div class="side-title" style="margin-top:18px">BADGES</div>
+      <div class="badge-list" id="badges"></div>
+      <p class="small" style="margin-top:16px">記録はこの端末のブラウザ内だけに保存されます。ログインや外部送信はまだありません。</p>
+    </aside>
+  </section>
+
+  <section class="journal">
+    <div class="card">
+      <h2 class="section-title">今日の観測ログ</h2>
+      <p class="small">正解を書く場所ではなく、「自分の前提がどこで揺れたか」を残す場所。</p>
+      <label for="notice">1. 何に気づいた？</label>
+      <textarea id="notice" placeholder="例：自分が『普通』だと思っていた前提が、他の地域では全然違った。"></textarea>
+      <label for="japan">2. 日本との違い / 共通点は？</label>
+      <textarea id="japan" placeholder="違いだけでなく、共通している部分も探す。"></textarea>
+      <label for="why">3. なぜ違うと思う？</label>
+      <textarea id="why" placeholder="地理、歴史、制度、宗教、気候、技術、経済… 仮説でOK。"></textarea>
+      <label for="update">4. 今日、どの常識を更新した？</label>
+      <textarea id="update" placeholder="『○○であるべき』→『○○という選択肢もある』"></textarea>
+      <div class="buttons">
+        <button id="saveBtn" class="secondary">下書きを保存</button>
+        <button id="completeBtn" class="primary">QUEST COMPLETE ✓</button>
+      </div>
+      <div class="saved" id="savedMsg"></div>
+    </div>
+  </section>
+
+  <section class="card" style="margin-top:14px">
+    <h2 class="section-title">30日の旅</h2>
+    <p class="small">知識を増やすだけではなく、段階的に「見る人」から「自分で選ぶ人」へ。</p>
+    <div class="phase-grid" id="phaseGrid"></div>
+  </section>
+
+  <footer class="footer">
+    WORLD QUEST v0.1｜Sun Loves Flow<br>
+    世界の常識 ≠ 日本の常識。けれど、どちらかを正解にしない。選択肢を増やして、自分で選ぶ。
+    <br><button id="resetBtn" class="reset">この端末のWORLD QUEST記録をリセット</button>
+  </footer>
+</main>
+
+<script>
+(() => {
+  const quests = [
+    {t:'地球は、いま何をしている？',c:'OPEN EYES / EARTH',u:'https://zoom.earth/',m:'衛星画像から、ニュースより前に「地球そのもの」を見る。',o:'雲・台風・火災・昼夜の境界を眺め、いま動いているものを3つ見つける。',cp:'日本列島と、同じ緯度にある別地域を見比べる。',q:'「天気」は個人の予定ではなく、産業・食・移動にどうつながっている？',r:'自然を「背景」ではなく、暮らしを動かす主体として見直す。'},
+    {t:'空には国境がある？',c:'OPEN EYES / TRANSPORT',u:'https://www.flightradar24.com/',m:'世界の航空交通をリアルタイムで眺める。',o:'飛行機が密集している地域と空白の地域を探す。',cp:'日本周辺と欧州・北米・アフリカの空を比べる。',q:'人・物・経済の流れは、地図の国境と同じ形をしている？',r:'「国」を面ではなく、移動のネットワークとして見る。'},
+    {t:'海は道路だった',c:'OPEN EYES / LOGISTICS',u:'https://www.marinetraffic.com/',m:'海運から、普段見えない物流を観測する。',o:'港の周辺にどれだけ船が集まっているかを見る。',cp:'東京湾と世界の主要港湾周辺を比べる。',q:'今日使った物のうち、海を渡ってきたものは何個ある？',r:'消費を「店で買う」から「世界の流れを受け取る」へ再定義する。'},
+    {t:'風は国境を読まない',c:'OPEN EYES / WEATHER',u:'https://www.windy.com/',m:'風・気圧・降水を一続きの地球として見る。',o:'日本の風が、どこから来てどこへ抜けているか追う。',cp:'日本と別大陸で、風のスケール感を比べる。',q:'農業・漁業・交通・災害は、風にどれだけ依存している？',r:'天気予報を「傘の要否」から「生活インフラ観測」に広げる。'},
+    {t:'地面は止まっていない',c:'OPEN EYES / GEOLOGY',u:'https://earthquake.usgs.gov/earthquakes/map/',m:'世界の地震分布から、地球の構造を見る。',o:'地震が線状に集まる場所を探す。',cp:'日本と地震の少ない地域を比べる。',q:'「安全な土地」という言葉は何を意味する？',r:'土地選びを価格・駅距離だけでなく、地学の時間軸まで広げる。'},
+    {t:'地図は真実そのもの？',c:'OPEN EYES / MAP',u:'https://www.thetruesize.com/',m:'地図投影が作るサイズ感の錯覚を体験する。',o:'日本やグリーンランド、アフリカを別緯度へ動かす。',cp:'頭の中の国土サイズと実際の比較結果を照合する。',q:'地図の見え方は、世界観にどんな影響を与える？',r:'「見えている形」と「実際」を分けて考える癖をつける。'},
+    {t:'知らない街の窓を開ける',c:'OPEN EYES / DAILY LIFE',u:'https://www.window-swap.com/',m:'誰かの日常の窓から、観光地ではない世界を見る。',o:'景色・音・建物・光・生活感を5つ観察する。',cp:'自分の窓の外と比べる。',q:'自分が「普通の家」「普通の街」と呼ぶ基準はどこで作られた？',r:'世界理解をニュースからだけでなく、日常の質感からも作る。'},
+    {t:'世界は思ったより良い？悪い？',c:'BIAS BREAK / DATA',u:'https://www.gapminder.org/',m:'直感とデータのズレを体験する。',o:'Gapminderのクイズや可視化をひとつ試す。',cp:'答える前の予想と、データを見た後を比べる。',q:'悲観・楽観のどちらが間違いではなく、何を見落としていた？',r:'「知っているつもり」を、検証可能な仮説へ変える。'},
+    {t:'長生きは当たり前？',c:'BIAS BREAK / HEALTH',u:'https://ourworldindata.org/life-expectancy',m:'平均寿命の長期変化と地域差を見る。',o:'100年以上の時間軸で変化を眺める。',cp:'日本と3地域を比べる。',q:'寿命を伸ばした要因は医療だけだろうか？',r:'健康を個人努力だけでなく、衛生・制度・食・環境を含むシステムとして見る。'},
+    {t:'豊かさ＝お金？',c:'BIAS BREAK / ECONOMY',u:'https://data.worldbank.org/',m:'所得以外の指標も使って「豊かさ」を眺める。',o:'GDP以外に教育・人口・健康など1指標を開く。',cp:'所得順位と別指標の順位が同じかを見る。',q:'自分が豊かさを測るなら、何を3指標にする？',r:'豊かさを単一スコアから複数軸へ変える。'},
+    {t:'人口は増え続ける？',c:'BIAS BREAK / POPULATION',u:'https://ourworldindata.org/population-growth',m:'人口の変化を長期データで見る。',o:'増えている地域・減っている地域を確認する。',cp:'日本と世界全体のトレンドを比べる。',q:'人口増減は「良い・悪い」だけで語れる？',r:'人口問題を人数ではなく、年齢構成・地域・制度まで含めて考える。'},
+    {t:'森はどこで消え、どこで戻る？',c:'BIAS BREAK / NATURE',u:'https://www.globalforestwatch.org/',m:'森林変化を地図で観測する。',o:'森林減少が目立つ地域を1つ探す。',cp:'日本の森林事情と、熱帯地域を比べる。',q:'食・木材・エネルギー・都市化のどれが森林とつながる？',r:'環境問題を遠い話から、自分の消費との接点へ戻す。'},
+    {t:'数字は物語になる',c:'BIAS BREAK / STORY',u:'https://pudding.cool/',m:'データを「読む」ではなく「体験する」表現を見る。',o:'1作品を選び、どこで理解が進んだか観察する。',cp:'普通の表やグラフで見た場合と比べる。',q:'情報は正しさだけでなく、伝わり方で価値が変わる？',r:'発信を「説明」から「体験設計」へ広げる。'},
+    {t:'見せ方が認知を作る',c:'BIAS BREAK / VISUAL',u:'https://www.informationisbeautiful.net/',m:'可視化そのものを観察対象にする。',o:'気になった図を1つ選び、何が一瞬で理解できるか見る。',cp:'文章だけだったら理解しづらい点を考える。',q:'自分の発信で「言葉より図」が向くものは何？',r:'理解力の問題と情報設計の問題を分ける。'},
+    {t:'ランダムな場所へ飛ぶ',c:'WORLD TRAVEL / SERENDIPITY',u:'https://www.mapcrunch.com/',m:'自分で選ばない場所に出会う。',o:'ランダム地点で建物・道路・植物・看板を観察する。',cp:'日本の同規模の場所を思い浮かべる。',q:'知らない場所でも「暮らし」を推測できる手掛かりは何？',r:'偶然をノイズではなく、視野を広げる装置として使う。'},
+    {t:'観光地じゃない旅をする',c:'WORLD TRAVEL / CITY',u:'https://virtualvacation.us/',m:'都市を歩く視点で疑似旅行する。',o:'歩く速度で街の情報量を感じる。',cp:'東京・立川・自分の生活圏と比べる。',q:'歩きやすさ・治安感・店・余白は何で決まる？',r:'都市を「便利かどうか」だけでなく、身体感覚で評価する。'},
+    {t:'変な場所には理由がある',c:'WORLD TRAVEL / CULTURE',u:'https://www.atlasobscura.com/',m:'普通の観光ガイドに載らない文化・場所を知る。',o:'気になる場所を1つ選び、背景を読む。',cp:'日本にも似た「地域だけの特異な文化」がないか考える。',q:'文化は合理性だけで生まれる？',r:'「変わっている」を、歴史を持ったローカルな合理性として見る。'},
+    {t:'過去の地図で現在を見る',c:'WORLD TRAVEL / HISTORY',u:'https://www.oldmapsonline.org/',m:'同じ土地を、別の時代から見る。',o:'知っている地域の古地図を探す。',cp:'現在の道路・川・街区と比較する。',q:'今の街の形に、昔の地形や産業はどれだけ残っている？',r:'場所を「現在の住所」ではなく時間の積層として見る。'},
+    {t:'音楽で時代旅行する',c:'WORLD TRAVEL / MUSIC',u:'https://radiooooo.com/',m:'国×年代を耳から旅する。',o:'自分が生まれる前の年代を3地域で聴く。',cp:'同じ年代の日本の音楽感覚と比べる。',q:'技術・政治・経済・若者文化は音にどう出る？',r:'歴史を出来事だけでなく、身体で感じる空気として捉える。'},
+    {t:'美術館を横断する',c:'WORLD TRAVEL / ART',u:'https://artsandculture.google.com/',m:'国境を越えて美術・建築・文化を眺める。',o:'普段選ばない地域の作品を1つ選ぶ。',cp:'日本美術と、構図・色・人物の扱いを比べる。',q:'「美しい」は普遍か、学習されたものか？',r:'好みを固定された性格ではなく、育てられる感覚として見る。'},
+    {t:'人類の記憶庫へ入る',c:'WORLD TRAVEL / ARCHIVE',u:'https://archive.org/',m:'現在のWebの外にある、人類の蓄積を覗く。',o:'古い本・映像・ソフトなど1つ探索する。',cp:'いま検索で上位に出る情報との違いを見る。',q:'残る情報と消える情報は、誰が決める？',r:'「最新＝価値が高い」という前提を一度外す。'},
+    {t:'自分の18歳までを地図化する',c:'REFRAME SELF / MEMORY',u:'https://en.wikipedia.org/wiki/Special:Random',m:'ランダム知識をきっかけに、自分の前提の出所を探る。',o:'出た記事から「自分はこれをどう判断した？」を見る。',cp:'その判断を、家族・学校・地域・テレビ・部活のどこで学んだか考える。',q:'それは自分で選んだ価値観？それとも引き継いだ価値観？',r:'常識を「自分そのもの」ではなく、更新可能な履歴として見る。'},
+    {t:'スケールを壊す',c:'REFRAME SELF / SCALE',u:'https://htwins.net/scale2/',m:'原子から宇宙までスケールを動かす。',o:'自分の身体より小さい世界と大きい世界を行き来する。',cp:'今日悩んでいたことを、このスケール感で見直す。',q:'大きさを変えると、重要度の感じ方はどう変わる？',r:'問題そのものだけでなく、見るスケールを選べると知る。'},
+    {t:'地球を外から見る',c:'REFRAME SELF / SPACE',u:'https://eyes.nasa.gov/',m:'地球を「住んでいる場所」ではなく天体として眺める。',o:'太陽系の中で地球を見つけ、その小ささを感じる。',cp:'国境のある地図と、宇宙からの地球を比べる。',q:'宇宙から見えない境界に、私たちはどれだけ意味を与えている？',r:'所属を大事にしながら、所属だけに閉じない視点を持つ。'},
+    {t:'空を共有している',c:'REFRAME SELF / SKY',u:'https://stellarium-web.org/',m:'場所を変えて、見える空を比べる。',o:'東京と南半球など別地域の星空を見る。',cp:'同じ地球でも「当たり前の夜空」が違うことを確認する。',q:'自分の世界観は、見えているものの範囲にどれだけ依存する？',r:'見えないことを「ない」と判断しない。'},
+    {t:'科学ニュースを一段深く読む',c:'REFRAME SELF / SCIENCE',u:'https://www.sciencedaily.com/',m:'見出しから先へ進み、情報の出所を意識する。',o:'気になる研究ニュースを1つ読む。',cp:'見出しの印象と本文の慎重さを比べる。',q:'何が事実で、何が解釈で、何がまだ仮説？',r:'「科学が言っている」を、根拠の段階まで分けて扱う。'},
+    {t:'未完成の知を読む',c:'REFRAME SELF / PAPERS',u:'https://arxiv.org/',m:'研究が完成品になる前のプレプリント文化を覗く。',o:'AI・教育・スポーツなど興味分野で1本検索する。',cp:'ニュース記事と論文要旨の言い方の違いを見る。',q:'最新情報を早く知ることと、確からしく知ることは同じ？',r:'速度と確度を別軸で扱う。'},
+    {t:'自分の常識を10個監査する',c:'INTEGRATE / AUDIT',u:'https://ourworldindata.org/',m:'この28日で揺れた前提を棚卸しする。',o:'過去ログを見返し、「前は当然だと思っていたこと」を10個書く。',cp:'いまも残す常識 / 更新する常識 / 保留する常識に分ける。',q:'その常識は、自分や周囲を助けている？それとも選択肢を狭めている？',r:'常識を敵にせず、定期的に点検する道具へ変える。'},
+    {t:'WORLD NAVIGATORになる',c:'INTEGRATE / DECLARATION',u:'https://observablehq.com/',m:'30日の観測を、自分の新しい判断原則へ変える。',o:'30日分のメモから繰り返し現れたテーマを3つ探す。',cp:'Day1の自分と今の自分で、世界の見え方がどう違うか書く。',q:'これから何を「自分で確かめる」人でありたい？',r:'最後に5つの原則を作る。例：一つの国・一つの数字・一つの物語だけで決めない。'}
+  ];
+
+  const phases=[
+    ['OPEN EYES','Day 1–7｜まず見る'],['BIAS BREAK','Day 8–14｜数字で揺らす'],['WORLD TRAVEL','Day 15–21｜文化を旅する'],['REFRAME SELF','Day 22–28｜自分を再編集'],['INTEGRATE','Day 29–30｜判断原則にする']
+  ];
+  const badgeDefs=[['first','FIRST STEP',1],['observer','OBSERVER',5],['traveler','TRAVELER',10],['breaker','BIAS BREAKER',15],['navigator','NAVIGATOR',30]];
+  const key='worldQuestV01';
+  const $=id=>document.getElementById(id);
+  let state=JSON.parse(localStorage.getItem(key)||'{"current":0,"logs":{},"completed":[]}');
+  if(!Array.isArray(state.completed))state.completed=[];
+  if(!state.logs)state.logs={};
+  if(typeof state.current!=='number')state.current=0;
+
+  function save(){localStorage.setItem(key,JSON.stringify(state))}
+  function current(){return quests[Math.max(0,Math.min(quests.length-1,state.current))]}
+  function level(done){if(done>=30)return['World Navigator',5];if(done>=20)return['Reframer',4];if(done>=10)return['Traveler',3];if(done>=5)return['Observer',2];return['Observer',1]}
+  function activePhase(i){if(i<7)return 0;if(i<14)return 1;if(i<21)return 2;if(i<28)return 3;return 4}
+  function logFor(i){return state.logs[i]||{notice:'',japan:'',why:'',update:''}}
+
+  function render(){
+    const q=current(),i=state.current,done=state.completed.length,xp=done*10,lv=level(done);
+    $('dayLabel').textContent=`DAY ${i+1}`;$('questTitle').textContent=q.t;$('questCategory').textContent=q.c;$('questMission').textContent=q.m;
+    $('observe').textContent=q.o;$('compare').textContent=q.cp;$('question').textContent=q.q;$('reframe').textContent=q.r;$('launch').href=q.u;$('questXp').textContent=state.completed.includes(i)?'✓ COMPLETE':'+10 XP';
+    $('prevBtn').disabled=i===0;$('nextBtn').disabled=i===quests.length-1;$('progressText').textContent=`${done} / 30 QUEST`;$('xpText').textContent=`${xp} XP`;$('progressBar').style.width=`${done/30*100}%`;
+    $('doneStat').textContent=done;$('perspectiveStat').textContent=done;$('updateStat').textContent=Object.values(state.logs).filter(x=>x.update&&x.update.trim()).length;$('levelLabel').textContent=`${lv[0]} Lv.${lv[1]}`;
+    const log=logFor(i);$('notice').value=log.notice;$('japan').value=log.japan;$('why').value=log.why;$('update').value=log.update;
+    $('completeBtn').textContent=state.completed.includes(i)?'COMPLETED ✓':'QUEST COMPLETE ✓';$('completeBtn').disabled=state.completed.includes(i);
+    $('badges').innerHTML=badgeDefs.map(([id,name,n])=>`<span class="badge ${done>=n?'on':''}">${done>=n?'✓ ':''}${name}</span>`).join('');
+    $('phaseGrid').innerHTML=phases.map((p,idx)=>`<div class="phase ${idx===activePhase(i)?'active':''}"><strong>${p[0]}</strong><span>${p[1]}</span></div>`).join('');
+    $('savedMsg').textContent='';window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function persistLog(){state.logs[state.current]={notice:$('notice').value.trim(),japan:$('japan').value.trim(),why:$('why').value.trim(),update:$('update').value.trim()};save();$('savedMsg').textContent='この端末に保存した。'}
+  $('saveBtn').onclick=persistLog;
+  $('completeBtn').onclick=()=>{persistLog();if(!state.completed.includes(state.current)){state.completed.push(state.current);state.completed.sort((a,b)=>a-b);save()}$('savedMsg').textContent='+10 XP｜QUEST COMPLETE！';render();$('savedMsg').textContent='+10 XP｜QUEST COMPLETE！'};
+  $('prevBtn').onclick=()=>{persistLog();state.current=Math.max(0,state.current-1);save();render()};
+  $('nextBtn').onclick=()=>{persistLog();state.current=Math.min(quests.length-1,state.current+1);save();render()};
+  $('resetBtn').onclick=()=>{if(confirm('この端末のWORLD QUEST進捗と観測ログをすべて消しますか？')){localStorage.removeItem(key);state={current:0,logs:{},completed:[]};render()}};
+  render();
+})();
+</script>
+</body>
+</html>
