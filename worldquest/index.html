@@ -169,6 +169,7 @@
   const badgeDefs=[['first','FIRST STEP',1],['observer','OBSERVER',5],['traveler','TRAVELER',10],['breaker','BIAS BREAKER',15],['navigator','NAVIGATOR',30]];
   const key='worldQuestV01';
   const $=id=>document.getElementById(id);
+  const escapeHtml=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   let state=JSON.parse(localStorage.getItem(key)||'{"current":0,"logs":{},"completed":[]}');
   if(!Array.isArray(state.completed))state.completed=[];
   if(!state.logs)state.logs={};
@@ -180,7 +181,7 @@
 
   function save(){localStorage.setItem(key,JSON.stringify(state))}
   function current(){return quests[Math.max(0,Math.min(quests.length-1,state.current))]}
-  function level(done){if(done>=30)return['World Navigator',6];if(done>=20)return['Reframer',4];if(done>=10)return['Traveler',3];if(done>=5)return['Observer',2];return['Observer',1]}
+  function level(done){if(done>=30)return['World Navigator',6];if(done>=24)return['Translator',5];if(done>=18)return['Reframer',4];if(done>=12)return['Questioner',3];if(done>=5)return['Comparator',2];return['Observer',1]}
   function activePhase(i){if(i<7)return 0;if(i<14)return 1;if(i<21)return 2;if(i<28)return 3;return 4}
   function logFor(i){return state.logs[i]||{place:'',notice:'',japan:'',why:'',update:''}}
   function localDay(d=new Date()){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return `${y}-${m}-${day}`}
@@ -205,16 +206,16 @@
     return `【WORLD QUEST｜Day ${i+1}】\n${q.t}${where}\n\n気づき：${notice}\n日本との違い/共通点：${japan}\nなぜ？：${why}\n今日の更新：${update}\n\n常識を捨てるのではなく、選択肢を増やす。\n#WORLDQUEST #SunLovesFlow`;
   }
   function markShared(){if(!state.sharedDays.includes(state.current)){state.sharedDays.push(state.current);state.sharedDays.sort((a,b)=>a-b);save()}}
-  function gotoQuest(i){persistLog(false);state.current=Math.max(0,Math.min(quests.length-1,i));save();render()}
+  function gotoQuest(i){persistLog(false);state.current=Math.max(0,Math.min(quests.length-1,i));save();render(true)}
 
   function renderCalendar(){
     $('calendar').innerHTML=quests.map((_,i)=>`<button class="day-cell ${i===state.current?'active':''} ${state.completed.includes(i)?'done':''} ${hasDraft(i)?'draft':''}" data-day="${i}" aria-label="Day ${i+1}">${i+1}</button>`).join('');
   }
   function renderStamps(){
     const done=[...state.completed].sort((a,b)=>b-a).slice(0,10);
-    $('stamps').innerHTML=done.length?done.map(i=>{const l=logFor(i),label=l.place||`DAY ${i+1}`;return `<span class="stamp">${iconFor(quests[i].c)} <strong>${label}</strong></span>`}).join(''):'<span class="small">Questを完了するとスタンプが増える。</span>';
+    $('stamps').innerHTML=done.length?done.map(i=>{const l=logFor(i),label=escapeHtml(l.place||`DAY ${i+1}`);return `<span class="stamp">${iconFor(quests[i].c)} <strong>${label}</strong></span>`}).join(''):'<span class="small">Questを完了するとスタンプが増える。</span>';
   }
-  function render(){
+  function render(scrollTop=true){
     const q=current(),i=state.current,done=state.completed.length,xp=done*10+state.sharedDays.length*5,lv=level(done);
     $('dayLabel').textContent=`DAY ${i+1}`;$('questTitle').textContent=q.t;$('questCategory').textContent=q.c;$('questMission').textContent=q.m;
     $('observe').textContent=q.o;$('compare').textContent=q.cp;$('question').textContent=q.q;$('reframe').textContent=q.r;$('launch').href=q.u;$('questXp').textContent=state.completed.includes(i)?'✓ COMPLETE':'+10 XP';
@@ -224,15 +225,15 @@
     $('completeBtn').textContent=state.completed.includes(i)?'COMPLETED ✓':'QUEST COMPLETE ✓';$('completeBtn').disabled=state.completed.includes(i);
     $('badges').innerHTML=badgeDefs.map(([id,name,n])=>`<span class="badge ${done>=n?'on':''}">${done>=n?'✓ ':''}${name}</span>`).join('');
     $('phaseGrid').innerHTML=phases.map((p,idx)=>`<div class="phase ${idx===activePhase(i)?'active':''}"><strong>${p[0]}</strong><span>${p[1]}</span></div>`).join('');
-    $('sharePreview').textContent=shareText(i);renderCalendar();renderStamps();$('savedMsg').textContent='';window.scrollTo({top:0,behavior:'smooth'});
+    $('sharePreview').textContent=shareText(i);renderCalendar();renderStamps();$('savedMsg').textContent='';if(scrollTop)window.scrollTo({top:0,behavior:'smooth'});
   }
 
   function persistLog(showMessage=true){state.logs[state.current]={place:$('place').value.trim(),notice:$('notice').value.trim(),japan:$('japan').value.trim(),why:$('why').value.trim(),update:$('update').value.trim()};save();if(showMessage)$('savedMsg').textContent='この端末に保存した。';$('sharePreview').textContent=shareText()}
-  async function copyShare(){persistLog(false);const text=shareText();try{await navigator.clipboard.writeText(text);markShared();$('savedMsg').textContent='投稿文をコピーした。+5 XP';render();$('savedMsg').textContent='投稿文をコピーした。+5 XP'}catch(_){$('savedMsg').textContent='コピーできなかったため、下の文章を長押ししてコピーしてね。'}}
-  async function nativeShare(){persistLog(false);const text=shareText();if(navigator.share){try{await navigator.share({title:`WORLD QUEST｜Day ${state.current+1}`,text,url:location.href});markShared();render();$('savedMsg').textContent='共有した。+5 XP';return}catch(e){if(e&&e.name==='AbortError')return}}await copyShare()}
+  async function copyShare(){persistLog(false);const text=shareText();try{await navigator.clipboard.writeText(text);markShared();render(false);$('savedMsg').textContent='投稿文をコピーした。+5 XP'}catch(_){$('savedMsg').textContent='コピーできなかったため、下の文章を長押ししてコピーしてね。'}}
+  async function nativeShare(){persistLog(false);const text=shareText();if(navigator.share){try{await navigator.share({title:`WORLD QUEST｜Day ${state.current+1}`,text,url:location.href});markShared();render(false);$('savedMsg').textContent='共有した。+5 XP';return}catch(e){if(e&&e.name==='AbortError')return}}await copyShare()}
 
   $('saveBtn').onclick=()=>persistLog(true);
-  $('completeBtn').onclick=()=>{persistLog(false);if(!state.completed.includes(state.current)){state.completed.push(state.current);state.completed.sort((a,b)=>a-b);state.completedAt[state.current]=localDay();save()}render();$('savedMsg').textContent='+10 XP｜QUEST COMPLETE！'};
+  $('completeBtn').onclick=()=>{persistLog(false);if(!state.completed.includes(state.current)){state.completed.push(state.current);state.completed.sort((a,b)=>a-b);state.completedAt[state.current]=localDay();save()}render(false);$('savedMsg').textContent='+10 XP｜QUEST COMPLETE！'};
   $('prevBtn').onclick=()=>gotoQuest(state.current-1);
   $('nextBtn').onclick=()=>gotoQuest(state.current+1);
   $('nextOpenBtn').onclick=()=>gotoQuest(nextOpen());
@@ -241,8 +242,8 @@
   $('calendar').onclick=e=>{const b=e.target.closest('[data-day]');if(b)gotoQuest(Number(b.dataset.day))};
   ['place','notice','japan','why','update'].forEach(id=>$(id).addEventListener('input',()=>{$('sharePreview').textContent=shareText()}));
   $('copyBtn').onclick=copyShare;$('shareBtn').onclick=nativeShare;
-  $('resetBtn').onclick=()=>{if(confirm('この端末のWORLD QUEST進捗と観測ログをすべて消しますか？')){localStorage.removeItem(key);state={version:2,current:0,logs:{},completed:[],completedAt:{},sharedDays:[],launches:{}};render()}};
-  save();render();
+  $('resetBtn').onclick=()=>{if(confirm('この端末のWORLD QUEST進捗と観測ログをすべて消しますか？')){localStorage.removeItem(key);state={version:2,current:0,logs:{},completed:[],completedAt:{},sharedDays:[],launches:{}};render(true)}};
+  save();render(false);
 })();
 </script>
 </body>
