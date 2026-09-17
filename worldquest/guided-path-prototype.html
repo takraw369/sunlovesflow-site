@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#07111f" />
+  <title>WORLD QUEST｜Guided Path Prototype</title>
+  <style>
+    :root{
+      --bg:#07111f;--bg2:#0e1a31;--panel:#111d34;--text:#f7f2df;--muted:#95a7c2;
+      --line:rgba(255,255,255,.10);--gold:#f2c15d;--sky:#82c9ff;--ok:#76d6a3;--locked:#58657a;
+      --shadow:0 18px 55px rgba(0,0,0,.32);--radius:24px
+    }
+    *{box-sizing:border-box}
+    html{background:var(--bg);scroll-behavior:smooth}
+    body{margin:0;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Noto Sans JP",sans-serif;color:var(--text);background:radial-gradient(circle at 50% -5%,rgba(69,124,196,.22),transparent 34%),linear-gradient(180deg,var(--bg2),var(--bg) 48%)}
+    button{font:inherit}
+    .app{width:min(760px,100%);margin:0 auto;padding:max(18px,env(safe-area-inset-top)) 18px max(52px,env(safe-area-inset-bottom))}
+    .top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:14px}.brand{font-weight:950;letter-spacing:.09em}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:.18em}.tag{border:1px solid var(--line);border-radius:999px;padding:7px 10px;color:var(--muted);font-size:11px}
+    .hero{padding:20px 0 10px}.eyebrow{color:var(--gold);font-size:11px;font-weight:900;letter-spacing:.18em}.hero h1{font-size:clamp(32px,9vw,58px);line-height:.98;letter-spacing:-.04em;margin:8px 0 12px}.hero p{margin:0;color:#dce5f4;line-height:1.75}.hero .note{color:var(--muted);font-size:12px;margin-top:8px}
+    .progress-shell{margin:18px 0 24px}.progress-meta{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-bottom:7px}.progress{height:8px;background:#1b2944;border-radius:999px;overflow:hidden}.progress>div{height:100%;width:32%;background:linear-gradient(90deg,var(--gold),#ffe19a)}
+    .journey{position:relative;padding:18px 0 12px}.spine{position:absolute;top:26px;bottom:30px;left:50%;width:3px;transform:translateX(-50%);background:linear-gradient(180deg,rgba(242,193,93,.9) 0 31%,rgba(255,255,255,.12) 31% 100%);border-radius:999px}
+    .step{position:relative;display:grid;grid-template-columns:1fr 96px 1fr;align-items:center;min-height:122px}.step:nth-child(even) .meta{grid-column:3;text-align:left}.step:nth-child(even) .blank{grid-column:1;grid-row:1}.step:nth-child(even) .node{grid-column:2;grid-row:1}.step:nth-child(odd) .meta{grid-column:1;text-align:right}.step:nth-child(odd) .node{grid-column:2}.meta{padding:0 12px}.meta b{display:block;font-size:14px;margin-bottom:4px}.meta span{color:var(--muted);font-size:11px;line-height:1.5;display:block}.node{width:76px;height:76px;border-radius:26px;margin:auto;display:flex;align-items:center;justify-content:center;position:relative;border:1px solid var(--line);box-shadow:var(--shadow);font-weight:950;font-size:20px;transition:.2s transform,.2s filter}.node.complete{background:linear-gradient(145deg,#294d43,#19342d);color:var(--ok);border-color:rgba(118,214,163,.35)}.node.current{width:86px;height:86px;border-radius:30px;background:linear-gradient(145deg,#f6cf79,#d9a93f);color:#211708;border:0;cursor:pointer;box-shadow:0 14px 44px rgba(242,193,93,.28)}.node.current:hover{transform:translateY(-2px);filter:brightness(1.04)}.node.next{background:linear-gradient(145deg,#16385d,#112844);color:var(--sky);border-color:rgba(130,201,255,.32)}.node.locked{background:#101a2c;color:var(--locked)}.node.reward{border-radius:50%;background:linear-gradient(145deg,#3b2748,#25192f);color:#e0b4ff;border-color:rgba(224,180,255,.25)}.node small{position:absolute;top:calc(100% + 8px);font-size:9px;color:var(--muted);font-weight:800;white-space:nowrap;letter-spacing:.08em}.pulse{position:absolute;inset:-8px;border:1px solid rgba(242,193,93,.35);border-radius:34px;animation:pulse 1.9s ease-out infinite}@keyframes pulse{0%{transform:scale(.92);opacity:.9}100%{transform:scale(1.22);opacity:0}}
+    .current-card{margin-top:20px;background:rgba(17,29,52,.96);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}.current-card .kicker{color:var(--gold);font-size:11px;font-weight:900;letter-spacing:.14em}.current-card h2{margin:6px 0 8px;font-size:30px;line-height:1.05}.current-card p{margin:0;color:#dce5f4;line-height:1.7}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.primary,.secondary{border-radius:16px;padding:14px 16px;font-weight:900;cursor:pointer}.primary{border:0;background:var(--gold);color:#1c1408}.secondary{border:1px solid var(--line);background:#17243e;color:var(--text)}
+    .receipt{margin-top:14px;border:1px dashed rgba(130,201,255,.28);border-radius:18px;padding:14px;color:var(--muted);font-size:12px;line-height:1.65}.receipt b{color:var(--sky)}
+    .footer{text-align:center;color:var(--muted);font-size:11px;line-height:1.6;padding-top:28px}
+    @media(max-width:560px){.step{grid-template-columns:1fr 82px 1fr;min-height:112px}.node{width:68px;height:68px;border-radius:23px}.node.current{width:78px;height:78px;border-radius:27px}.meta{padding:0 8px}.meta b{font-size:12px}.meta span{font-size:10px}.actions{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<main class="app">
+  <header class="top">
+    <div class="brand">SUN LOVES FLOW<small>WORLD QUEST LAB</small></div>
+    <div class="tag">PATTERN TRIAL 01</div>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">GUIDED QUEST PATH</div>
+    <h1>次に進む場所が、<br>ひと目でわかる旅。</h1>
+    <p>WORLD QUESTの30日を「一覧」ではなく、現在地と次の一歩が見える一本道として体験できるかを試す。</p>
+    <div class="note">参考機構：Duolingo Guided Learning Path。配色・形・コピー・キャラクターは模倣せず、進行構造だけを独立実装。</div>
+  </section>
+
+  <section class="progress-shell">
+    <div class="progress-meta"><span>9 / 30 QUEST</span><span>Observer Lv.3 · 120 XP</span></div>
+    <div class="progress"><div></div></div>
+  </section>
+
+  <section class="journey" aria-label="WORLD QUEST guided path prototype">
+    <div class="spine" aria-hidden="true"></div>
+
+    <div class="step">
+      <div class="meta"><b>DAY 7</b><span>見えない物流を観測</span></div>
+      <div class="node complete" aria-label="Day 7 completed">✓<small>COMPLETE</small></div>
+      <div class="blank"></div>
+    </div>
+
+    <div class="step">
+      <div class="blank"></div>
+      <div class="node complete" aria-label="Day 8 completed">✓<small>COMPLETE</small></div>
+      <div class="meta"><b>DAY 8</b><span>都市の夜を比べる</span></div>
+    </div>
+
+    <div class="step">
+      <div class="meta"><b>DAY 9</b><span>地球はいま何をしている？</span></div>
+      <button class="node current" id="currentNode" aria-label="Open current quest Day 9"><span class="pulse" aria-hidden="true"></span>9<small>START HERE</small></button>
+      <div class="blank"></div>
+    </div>
+
+    <div class="step">
+      <div class="blank"></div>
+      <div class="node reward" aria-label="Reflection milestone">✦<small>REFLECT</small></div>
+      <div class="meta"><b>視点の休憩所</b><span>ここまでの前提更新を1つ言葉にする</span></div>
+    </div>
+
+    <div class="step">
+      <div class="meta"><b>DAY 10</b><span>空には国境がある？</span></div>
+      <div class="node next" aria-label="Next quest Day 10">10<small>NEXT</small></div>
+      <div class="blank"></div>
+    </div>
+
+    <div class="step">
+      <div class="blank"></div>
+      <div class="node locked" aria-label="Future quest locked">11<small>FUTURE</small></div>
+      <div class="meta"><b>DAY 11</b><span>次の観測テーマ</span></div>
+    </div>
+  </section>
+
+  <section class="current-card" id="currentCard">
+    <div class="kicker">CURRENT QUEST · DAY 9</div>
+    <h2>地球は、いま何をしている？</h2>
+    <p>衛星画像から、ニュースより前に「地球そのもの」を見る。いま動いているものを3つ見つける。</p>
+    <div class="actions">
+      <button class="primary" id="startBtn">このQuestを始める →</button>
+      <button class="secondary" id="feedbackBtn">このPath、どう？</button>
+    </div>
+    <div class="receipt" id="receipt"><b>TRY</b>：見るべきは「現在地がわかるか」「次の一歩が迷わないか」「30日が長すぎず旅に見えるか」。</div>
+  </section>
+
+  <footer class="footer">WORLD QUEST LAB · isolated prototype · no production state is changed</footer>
+</main>
+<script>
+  const card = document.getElementById('currentCard');
+  const node = document.getElementById('currentNode');
+  const start = document.getElementById('startBtn');
+  const feedback = document.getElementById('feedbackBtn');
+  node.addEventListener('click', () => card.scrollIntoView({behavior:'smooth', block:'center'}));
+  start.addEventListener('click', () => {
+    document.getElementById('receipt').innerHTML = '<b>OBSERVATION</b>：現在地ノード → Quest詳細へ進む導線は自然か？ 本番では既存のQuest詳細カードへ接続する。';
+  });
+  feedback.addEventListener('click', () => {
+    document.getElementById('receipt').innerHTML = '<b>FEEDBACK PROMPT</b>：KEEP / TRY / DROP のどれ？ 理由は「見やすさ・ワクワク・迷い・長さ」の4軸で一言だけ残す。';
+  });
+</script>
+</body>
+</html>
