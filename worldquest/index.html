@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#08111f" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="description" content="世界を旅しながら、常識を再編集する30日間のWORLD QUEST。" />
   <title>WORLD QUEST｜世界を旅して、常識を再編集する</title>
   <style>
     :root{
@@ -13,22 +14,26 @@
       --danger:#ff9a9a;--radius:22px;--shadow:0 18px 55px rgba(0,0,0,.28)
     }
     *{box-sizing:border-box}html{background:var(--bg);scroll-behavior:smooth}body{margin:0;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Noto Sans JP",sans-serif;color:var(--text);background:radial-gradient(circle at 50% -10%,rgba(79,126,199,.20),transparent 36%),linear-gradient(180deg,var(--bg2),var(--bg) 48%)}
-    a{color:inherit}.app{width:min(860px,100%);margin:0 auto;padding:max(18px,env(safe-area-inset-top)) 18px max(42px,env(safe-area-inset-bottom))}.top{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:18px}.brand{font-weight:900;letter-spacing:.08em}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:.18em}.level{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:12px}.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:7px 10px;background:rgba(255,255,255,.035)}
-    .hero{padding:26px 0 20px}.eyebrow{color:var(--gold);font-weight:900;letter-spacing:.16em;font-size:12px;text-transform:uppercase}.hero h1{font-size:clamp(38px,12vw,76px);line-height:.92;letter-spacing:-.045em;margin:10px 0 14px}.hero h1 span{display:block;color:var(--gold)}.lead{font-size:clamp(16px,4.4vw,21px);line-height:1.7;margin:0;color:#dce5f4;max-width:720px}.sublead{color:var(--muted);line-height:1.7;margin:10px 0 0}
+    a{color:inherit}.app{width:min(940px,100%);margin:0 auto;padding:max(18px,env(safe-area-inset-top)) 18px max(42px,env(safe-area-inset-bottom))}.top{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:18px}.brand{font-weight:900;letter-spacing:.08em}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:.18em}.level{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:12px;flex-wrap:wrap;justify-content:flex-end}.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:7px 10px;background:rgba(255,255,255,.035)}
+    .hero{padding:26px 0 20px}.eyebrow{color:var(--gold);font-weight:900;letter-spacing:.16em;font-size:12px;text-transform:uppercase}.hero h1{font-size:clamp(38px,12vw,76px);line-height:.92;letter-spacing:-.045em;margin:10px 0 14px}.hero h1 span{display:block;color:var(--gold)}.lead{font-size:clamp(16px,4.4vw,21px);line-height:1.7;margin:0;color:#dce5f4;max-width:760px}.sublead{color:var(--muted);line-height:1.7;margin:10px 0 0}.hero-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.hero-actions button{width:auto}
     .progress-wrap{margin:18px 0 0}.progress-meta{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-bottom:7px}.progress{height:8px;background:#1d2b47;border-radius:999px;overflow:hidden}.progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--gold),#ffe19a);transition:width .25s ease}
     .grid{display:grid;grid-template-columns:1.25fr .75fr;gap:14px}.card{background:rgba(17,29,52,.94);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}.card h2,.card h3{margin:0}.quest-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}.day{color:var(--gold);font-weight:900;font-size:13px;letter-spacing:.08em}.quest-title{font-size:clamp(27px,7vw,40px);line-height:1.05;margin:5px 0 9px;font-weight:950}.category{color:var(--sky);font-size:12px;font-weight:800}.mission{color:#dbe4f3;line-height:1.7;margin:14px 0}.prompt{background:var(--panel2);border:1px solid var(--line);border-radius:17px;padding:14px;margin:12px 0}.prompt b{display:block;font-size:12px;color:var(--gold);letter-spacing:.08em;margin-bottom:6px}.prompt p{margin:0;line-height:1.65;color:#edf2f9}
-    .launch,.primary,.secondary,.ghost{font:inherit;border-radius:16px;padding:15px 16px;font-weight:900;cursor:pointer}.launch,.primary{border:0;background:var(--gold);color:#1b1407}.secondary{border:1px solid var(--line);background:var(--panel2);color:var(--text)}.ghost{border:1px solid var(--line);background:transparent;color:var(--muted)}.launch{width:100%;display:flex;align-items:center;justify-content:center;text-decoration:none;margin-top:14px}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.full{grid-column:1/-1}.launch:hover,.primary:hover{filter:brightness(1.05)}
-    .side-title{font-size:13px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}.stat{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.stat:last-child{border-bottom:0}.stat b{font-size:18px}.stat span{color:var(--muted);font-size:13px}.badge-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.badge{font-size:11px;border-radius:999px;padding:7px 9px;border:1px solid var(--line);color:var(--muted)}.badge.on{border-color:rgba(242,193,93,.48);color:var(--gold);background:rgba(242,193,93,.07)}
-    .journal{margin-top:14px}.journal .card{box-shadow:none}label{display:block;color:var(--muted);font-size:12px;font-weight:800;margin:14px 0 6px}textarea{width:100%;min-height:92px;resize:vertical;border:1px solid var(--line);border-radius:14px;background:#0d172a;color:var(--text);padding:13px;font:inherit;line-height:1.6}.saved{color:var(--ok);font-size:12px;min-height:18px;margin-top:8px}.small{color:var(--muted);font-size:12px;line-height:1.6}.section-title{font-size:21px;margin:0 0 5px}.phase-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}.phase{border:1px solid var(--line);border-radius:14px;padding:11px 9px;background:rgba(255,255,255,.025);font-size:11px;color:var(--muted);line-height:1.4}.phase strong{display:block;color:var(--text);margin-bottom:2px}.phase.active{border-color:rgba(128,199,255,.45);background:rgba(128,199,255,.06)}
-    .footer{padding:28px 4px 8px;color:var(--muted);font-size:12px;line-height:1.7;text-align:center}.reset{margin-top:12px;background:none;border:0;color:#72819d;text-decoration:underline;cursor:pointer;font:inherit;font-size:11px}
-    @media(max-width:720px){.grid{grid-template-columns:1fr}.phase-grid{grid-template-columns:1fr}.phase{display:flex;justify-content:space-between;align-items:center}.top{align-items:flex-start}.hero{padding-top:12px}.card{padding:17px}.buttons{grid-template-columns:1fr}.full{grid-column:auto}}
+    .launch,.primary,.secondary,.ghost{font:inherit;border-radius:16px;padding:15px 16px;font-weight:900;cursor:pointer}.launch,.primary{border:0;background:var(--gold);color:#1b1407}.secondary{border:1px solid var(--line);background:var(--panel2);color:var(--text)}.ghost{border:1px solid var(--line);background:transparent;color:var(--muted)}.launch{width:100%;display:flex;align-items:center;justify-content:center;text-decoration:none;margin-top:14px}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.full{grid-column:1/-1}.launch:hover,.primary:hover{filter:brightness(1.05)}button:disabled{opacity:.42;cursor:not-allowed}
+    .side-title{font-size:13px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}.stat{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.stat:last-child{border-bottom:0}.stat b{font-size:18px}.stat span{color:var(--muted);font-size:13px}.badge-list,.stamp-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.badge,.stamp{font-size:11px;border-radius:999px;padding:7px 9px;border:1px solid var(--line);color:var(--muted)}.badge.on{border-color:rgba(242,193,93,.48);color:var(--gold);background:rgba(242,193,93,.07)}.stamp{border-style:dashed;color:#dce5f4}.stamp strong{color:var(--gold)}
+    .journal{margin-top:14px}.journal .card{box-shadow:none}label{display:block;color:var(--muted);font-size:12px;font-weight:800;margin:14px 0 6px}textarea,input{width:100%;border:1px solid var(--line);border-radius:14px;background:#0d172a;color:var(--text);padding:13px;font:inherit;line-height:1.6}textarea{min-height:92px;resize:vertical}input{min-height:48px}.saved{color:var(--ok);font-size:12px;min-height:18px;margin-top:8px}.small{color:var(--muted);font-size:12px;line-height:1.6}.section-title{font-size:21px;margin:0 0 5px}.phase-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}.phase{border:1px solid var(--line);border-radius:14px;padding:11px 9px;background:rgba(255,255,255,.025);font-size:11px;color:var(--muted);line-height:1.4}.phase strong{display:block;color:var(--text);margin-bottom:2px}.phase.active{border-color:rgba(128,199,255,.45);background:rgba(128,199,255,.06)}
+    .calendar{display:grid;grid-template-columns:repeat(10,1fr);gap:7px;margin-top:14px}.day-cell{aspect-ratio:1;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025);color:var(--muted);font-weight:900;cursor:pointer;font-size:12px;position:relative}.day-cell.active{border-color:var(--sky);color:var(--sky);box-shadow:inset 0 0 0 1px rgba(128,199,255,.3)}.day-cell.done{background:rgba(242,193,93,.10);border-color:rgba(242,193,93,.45);color:var(--gold)}.day-cell.draft:after{content:'';width:5px;height:5px;border-radius:50%;background:var(--ok);position:absolute;right:6px;top:6px}
+    .share-box{margin-top:14px;background:rgba(128,199,255,.05);border:1px solid rgba(128,199,255,.17);border-radius:18px;padding:16px}.share-preview{white-space:pre-wrap;color:#dce5f4;line-height:1.65;font-size:13px;margin:10px 0 0}.share-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.flow-note{border-left:3px solid var(--gold);padding-left:12px;color:var(--muted);line-height:1.7;margin-top:14px}.footer{padding:28px 4px 8px;color:var(--muted);font-size:12px;line-height:1.7;text-align:center}.reset{margin-top:12px;background:none;border:0;color:#72819d;text-decoration:underline;cursor:pointer;font:inherit;font-size:11px}
+    @media(max-width:720px){.grid{grid-template-columns:1fr}.phase-grid{grid-template-columns:1fr}.phase{display:flex;justify-content:space-between;align-items:center}.top{align-items:flex-start}.hero{padding-top:12px}.card{padding:17px}.buttons,.share-actions{grid-template-columns:1fr}.full{grid-column:auto}.calendar{grid-template-columns:repeat(6,1fr)}.hero-actions button{flex:1;min-width:150px}}
   </style>
 </head>
 <body>
 <main class="app">
   <header class="top">
     <div class="brand">SUN LOVES FLOW<small>WORLD OBSERVATORY</small></div>
-    <div class="level"><span class="pill">🌍 <b id="levelLabel">Observer Lv.1</b></span></div>
+    <div class="level">
+      <span class="pill">🔥 <b id="streakLabel">0 day</b></span>
+      <span class="pill">🌍 <b id="levelLabel">Observer Lv.1</b></span>
+    </div>
   </header>
 
   <section class="hero">
@@ -36,6 +41,10 @@
     <h1>世界を旅して、<span>常識を再編集する。</span></h1>
     <p class="lead">日本の当たり前を否定するのではなく、世界の別の前提を知り、自分で選び直す30日。</p>
     <p class="sublead">見る → 比べる → 問う → 再定義する → 動く。正解数ではなく「視点が増えた数」が経験値になる。</p>
+    <div class="hero-actions">
+      <button id="randomBtn" class="secondary">🎲 ランダム旅へ</button>
+      <button id="nextOpenBtn" class="ghost">🧭 次の未完了Quest</button>
+    </div>
     <div class="progress-wrap">
       <div class="progress-meta"><span id="progressText">0 / 30 QUEST</span><span id="xpText">0 XP</span></div>
       <div class="progress"><div id="progressBar"></div></div>
@@ -63,11 +72,14 @@
     <aside class="card">
       <div class="side-title">WORLD PASSPORT</div>
       <div class="stat"><span>完了Quest</span><b id="doneStat">0</b></div>
+      <div class="stat"><span>訪れた場所</span><b id="placeStat">0</b></div>
       <div class="stat"><span>Perspective</span><b id="perspectiveStat">0</b></div>
       <div class="stat"><span>Update</span><b id="updateStat">0</b></div>
+      <div class="side-title" style="margin-top:18px">PASSPORT STAMPS</div>
+      <div class="stamp-list" id="stamps"></div>
       <div class="side-title" style="margin-top:18px">BADGES</div>
       <div class="badge-list" id="badges"></div>
-      <p class="small" style="margin-top:16px">記録はこの端末のブラウザ内だけに保存されます。ログインや外部送信はまだありません。</p>
+      <p class="small" style="margin-top:16px">記録はこの端末のブラウザ内だけに保存。ログインや外部送信はまだありません。</p>
     </aside>
   </section>
 
@@ -75,6 +87,8 @@
     <div class="card">
       <h2 class="section-title">今日の観測ログ</h2>
       <p class="small">正解を書く場所ではなく、「自分の前提がどこで揺れたか」を残す場所。</p>
+      <label for="place">0. 今日どこへ行った？（国・地域・都市・場所）</label>
+      <input id="place" placeholder="例：Brazil / Nairobi / マラッカ海峡 / 火星" />
       <label for="notice">1. 何に気づいた？</label>
       <textarea id="notice" placeholder="例：自分が『普通』だと思っていた前提が、他の地域では全然違った。"></textarea>
       <label for="japan">2. 日本との違い / 共通点は？</label>
@@ -88,17 +102,28 @@
         <button id="completeBtn" class="primary">QUEST COMPLETE ✓</button>
       </div>
       <div class="saved" id="savedMsg"></div>
+
+      <div class="share-box">
+        <div class="side-title">SHARE｜今日の発見を外へ</div>
+        <div id="sharePreview" class="share-preview"></div>
+        <div class="share-actions">
+          <button id="copyBtn" class="secondary">📋 投稿文をコピー</button>
+          <button id="shareBtn" class="primary">↗ 共有する</button>
+        </div>
+      </div>
     </div>
   </section>
 
   <section class="card" style="margin-top:14px">
     <h2 class="section-title">30日の旅</h2>
-    <p class="small">知識を増やすだけではなく、段階的に「見る人」から「自分で選ぶ人」へ。</p>
+    <p class="small">日付を押せばそのQuestへ移動。金色＝完了、緑点＝下書きあり。</p>
+    <div class="calendar" id="calendar"></div>
     <div class="phase-grid" id="phaseGrid"></div>
+    <p class="flow-note">WORLD OBSERVATORY → WORLD QUEST → 観察 → 比較 → 問い → 常識再編集 → 発信 → 判断軸</p>
   </section>
 
   <footer class="footer">
-    WORLD QUEST v0.1｜Sun Loves Flow<br>
+    WORLD QUEST v0.2｜Sun Loves Flow<br>
     世界の常識 ≠ 日本の常識。けれど、どちらかを正解にしない。選択肢を増やして、自分で選ぶ。
     <br><button id="resetBtn" class="reset">この端末のWORLD QUEST記録をリセット</button>
   </footer>
@@ -144,37 +169,81 @@
   const badgeDefs=[['first','FIRST STEP',1],['observer','OBSERVER',5],['traveler','TRAVELER',10],['breaker','BIAS BREAKER',15],['navigator','NAVIGATOR',30]];
   const key='worldQuestV01';
   const $=id=>document.getElementById(id);
+  const escapeHtml=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   let state=JSON.parse(localStorage.getItem(key)||'{"current":0,"logs":{},"completed":[]}');
   if(!Array.isArray(state.completed))state.completed=[];
   if(!state.logs)state.logs={};
   if(typeof state.current!=='number')state.current=0;
+  if(!state.completedAt)state.completedAt={};
+  if(!Array.isArray(state.sharedDays))state.sharedDays=[];
+  if(!state.launches)state.launches={};
+  state.version=2;
 
   function save(){localStorage.setItem(key,JSON.stringify(state))}
   function current(){return quests[Math.max(0,Math.min(quests.length-1,state.current))]}
-  function level(done){if(done>=30)return['World Navigator',5];if(done>=20)return['Reframer',4];if(done>=10)return['Traveler',3];if(done>=5)return['Observer',2];return['Observer',1]}
+  function level(done){if(done>=30)return['World Navigator',6];if(done>=24)return['Translator',5];if(done>=18)return['Reframer',4];if(done>=12)return['Questioner',3];if(done>=5)return['Comparator',2];return['Observer',1]}
   function activePhase(i){if(i<7)return 0;if(i<14)return 1;if(i<21)return 2;if(i<28)return 3;return 4}
-  function logFor(i){return state.logs[i]||{notice:'',japan:'',why:'',update:''}}
+  function logFor(i){return state.logs[i]||{place:'',notice:'',japan:'',why:'',update:''}}
+  function localDay(d=new Date()){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return `${y}-${m}-${day}`}
+  function iconFor(c){if(c.includes('EARTH')||c.includes('NATURE')||c.includes('GEOLOGY'))return'🌎';if(c.includes('TRANSPORT')||c.includes('LOGISTICS'))return'✈️';if(c.includes('MAP')||c.includes('CITY'))return'🗺️';if(c.includes('DATA')||c.includes('ECONOMY')||c.includes('HEALTH')||c.includes('POPULATION'))return'📊';if(c.includes('MUSIC'))return'🎧';if(c.includes('ART'))return'🎨';if(c.includes('SPACE')||c.includes('SKY')||c.includes('SCALE'))return'✨';if(c.includes('SCIENCE')||c.includes('PAPERS'))return'🔬';if(c.includes('HISTORY')||c.includes('ARCHIVE')||c.includes('MEMORY'))return'📜';return'🧭'}
+  function visitedPlaces(){return [...new Set(Object.values(state.logs).map(x=>(x.place||'').trim()).filter(Boolean))]}
+  function perspectiveCount(){return Object.values(state.logs).filter(x=>[x.notice,x.japan,x.why,x.update].filter(v=>v&&v.trim()).length>=2).length}
+  function updateCount(){return Object.values(state.logs).filter(x=>x.update&&x.update.trim()).length}
+  function streak(){
+    const dates=[...new Set(Object.values(state.completedAt||{}).filter(Boolean))].sort();
+    if(!dates.length)return 0;
+    const today=localDay(),y=new Date();y.setDate(y.getDate()-1);const yesterday=localDay(y);
+    if(!dates.includes(today)&&!dates.includes(yesterday))return 0;
+    let cursor=new Date(dates.includes(today)?today:yesterday),count=0,set=new Set(dates);
+    while(set.has(localDay(cursor))){count++;cursor.setDate(cursor.getDate()-1)}
+    return count;
+  }
+  function hasDraft(i){const l=state.logs[i];return !!(l&&[l.place,l.notice,l.japan,l.why,l.update].some(v=>v&&v.trim()))}
+  function nextOpen(){const n=quests.findIndex((_,i)=>!state.completed.includes(i));return n===-1?state.current:n}
+  function shareText(i=state.current){
+    const q=quests[i],l=logFor(i),where=l.place?`\n旅先：${l.place}`:'';
+    const notice=l.notice||'＿＿＿',japan=l.japan||'＿＿＿',why=l.why||'＿＿＿',update=l.update||'＿＿＿';
+    return `【WORLD QUEST｜Day ${i+1}】\n${q.t}${where}\n\n気づき：${notice}\n日本との違い/共通点：${japan}\nなぜ？：${why}\n今日の更新：${update}\n\n常識を捨てるのではなく、選択肢を増やす。\n#WORLDQUEST #SunLovesFlow`;
+  }
+  function markShared(){if(!state.sharedDays.includes(state.current)){state.sharedDays.push(state.current);state.sharedDays.sort((a,b)=>a-b);save()}}
+  function gotoQuest(i){persistLog(false);state.current=Math.max(0,Math.min(quests.length-1,i));save();render(true)}
 
-  function render(){
-    const q=current(),i=state.current,done=state.completed.length,xp=done*10,lv=level(done);
+  function renderCalendar(){
+    $('calendar').innerHTML=quests.map((_,i)=>`<button class="day-cell ${i===state.current?'active':''} ${state.completed.includes(i)?'done':''} ${hasDraft(i)?'draft':''}" data-day="${i}" aria-label="Day ${i+1}">${i+1}</button>`).join('');
+  }
+  function renderStamps(){
+    const done=[...state.completed].sort((a,b)=>b-a).slice(0,10);
+    $('stamps').innerHTML=done.length?done.map(i=>{const l=logFor(i),label=escapeHtml(l.place||`DAY ${i+1}`);return `<span class="stamp">${iconFor(quests[i].c)} <strong>${label}</strong></span>`}).join(''):'<span class="small">Questを完了するとスタンプが増える。</span>';
+  }
+  function render(scrollTop=true){
+    const q=current(),i=state.current,done=state.completed.length,xp=done*10+state.sharedDays.length*5,lv=level(done);
     $('dayLabel').textContent=`DAY ${i+1}`;$('questTitle').textContent=q.t;$('questCategory').textContent=q.c;$('questMission').textContent=q.m;
     $('observe').textContent=q.o;$('compare').textContent=q.cp;$('question').textContent=q.q;$('reframe').textContent=q.r;$('launch').href=q.u;$('questXp').textContent=state.completed.includes(i)?'✓ COMPLETE':'+10 XP';
     $('prevBtn').disabled=i===0;$('nextBtn').disabled=i===quests.length-1;$('progressText').textContent=`${done} / 30 QUEST`;$('xpText').textContent=`${xp} XP`;$('progressBar').style.width=`${done/30*100}%`;
-    $('doneStat').textContent=done;$('perspectiveStat').textContent=done;$('updateStat').textContent=Object.values(state.logs).filter(x=>x.update&&x.update.trim()).length;$('levelLabel').textContent=`${lv[0]} Lv.${lv[1]}`;
-    const log=logFor(i);$('notice').value=log.notice;$('japan').value=log.japan;$('why').value=log.why;$('update').value=log.update;
+    $('doneStat').textContent=done;$('placeStat').textContent=visitedPlaces().length;$('perspectiveStat').textContent=perspectiveCount();$('updateStat').textContent=updateCount();$('levelLabel').textContent=`${lv[0]} Lv.${lv[1]}`;$('streakLabel').textContent=`${streak()} day`;
+    const log=logFor(i);$('place').value=log.place||'';$('notice').value=log.notice||'';$('japan').value=log.japan||'';$('why').value=log.why||'';$('update').value=log.update||'';
     $('completeBtn').textContent=state.completed.includes(i)?'COMPLETED ✓':'QUEST COMPLETE ✓';$('completeBtn').disabled=state.completed.includes(i);
     $('badges').innerHTML=badgeDefs.map(([id,name,n])=>`<span class="badge ${done>=n?'on':''}">${done>=n?'✓ ':''}${name}</span>`).join('');
     $('phaseGrid').innerHTML=phases.map((p,idx)=>`<div class="phase ${idx===activePhase(i)?'active':''}"><strong>${p[0]}</strong><span>${p[1]}</span></div>`).join('');
-    $('savedMsg').textContent='';window.scrollTo({top:0,behavior:'smooth'});
+    $('sharePreview').textContent=shareText(i);renderCalendar();renderStamps();$('savedMsg').textContent='';if(scrollTop)window.scrollTo({top:0,behavior:'smooth'});
   }
 
-  function persistLog(){state.logs[state.current]={notice:$('notice').value.trim(),japan:$('japan').value.trim(),why:$('why').value.trim(),update:$('update').value.trim()};save();$('savedMsg').textContent='この端末に保存した。'}
-  $('saveBtn').onclick=persistLog;
-  $('completeBtn').onclick=()=>{persistLog();if(!state.completed.includes(state.current)){state.completed.push(state.current);state.completed.sort((a,b)=>a-b);save()}$('savedMsg').textContent='+10 XP｜QUEST COMPLETE！';render();$('savedMsg').textContent='+10 XP｜QUEST COMPLETE！'};
-  $('prevBtn').onclick=()=>{persistLog();state.current=Math.max(0,state.current-1);save();render()};
-  $('nextBtn').onclick=()=>{persistLog();state.current=Math.min(quests.length-1,state.current+1);save();render()};
-  $('resetBtn').onclick=()=>{if(confirm('この端末のWORLD QUEST進捗と観測ログをすべて消しますか？')){localStorage.removeItem(key);state={current:0,logs:{},completed:[]};render()}};
-  render();
+  function persistLog(showMessage=true){state.logs[state.current]={place:$('place').value.trim(),notice:$('notice').value.trim(),japan:$('japan').value.trim(),why:$('why').value.trim(),update:$('update').value.trim()};save();if(showMessage)$('savedMsg').textContent='この端末に保存した。';$('sharePreview').textContent=shareText()}
+  async function copyShare(){persistLog(false);const text=shareText();try{await navigator.clipboard.writeText(text);markShared();render(false);$('savedMsg').textContent='投稿文をコピーした。+5 XP'}catch(_){$('savedMsg').textContent='コピーできなかったため、下の文章を長押ししてコピーしてね。'}}
+  async function nativeShare(){persistLog(false);const text=shareText();if(navigator.share){try{await navigator.share({title:`WORLD QUEST｜Day ${state.current+1}`,text,url:location.href});markShared();render(false);$('savedMsg').textContent='共有した。+5 XP';return}catch(e){if(e&&e.name==='AbortError')return}}await copyShare()}
+
+  $('saveBtn').onclick=()=>persistLog(true);
+  $('completeBtn').onclick=()=>{persistLog(false);if(!state.completed.includes(state.current)){state.completed.push(state.current);state.completed.sort((a,b)=>a-b);state.completedAt[state.current]=localDay();save()}render(false);$('savedMsg').textContent='+10 XP｜QUEST COMPLETE！'};
+  $('prevBtn').onclick=()=>gotoQuest(state.current-1);
+  $('nextBtn').onclick=()=>gotoQuest(state.current+1);
+  $('nextOpenBtn').onclick=()=>gotoQuest(nextOpen());
+  $('randomBtn').onclick=()=>{const open=quests.map((_,i)=>i).filter(i=>!state.completed.includes(i)&&i!==state.current),pool=open.length?open:quests.map((_,i)=>i).filter(i=>i!==state.current);gotoQuest(pool[Math.floor(Math.random()*pool.length)]||0)};
+  $('launch').onclick=()=>{state.launches[state.current]=(state.launches[state.current]||0)+1;save()};
+  $('calendar').onclick=e=>{const b=e.target.closest('[data-day]');if(b)gotoQuest(Number(b.dataset.day))};
+  ['place','notice','japan','why','update'].forEach(id=>$(id).addEventListener('input',()=>{$('sharePreview').textContent=shareText()}));
+  $('copyBtn').onclick=copyShare;$('shareBtn').onclick=nativeShare;
+  $('resetBtn').onclick=()=>{if(confirm('この端末のWORLD QUEST進捗と観測ログをすべて消しますか？')){localStorage.removeItem(key);state={version:2,current:0,logs:{},completed:[],completedAt:{},sharedDays:[],launches:{}};render(true)}};
+  save();render(false);
 })();
 </script>
 </body>
