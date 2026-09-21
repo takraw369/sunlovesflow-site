@@ -39,10 +39,20 @@
     };
   };
 
+  function loadOptionalShadow() {
+    if (document.querySelector('script[src="./shadow-optional.js"]')) return;
+    const optional = document.createElement('script');
+    optional.src = './shadow-optional.js';
+    document.body.appendChild(optional);
+  }
+
   if (!document.querySelector('script[src="./flow-hijutsu.js"]')) {
     const script = document.createElement('script');
     script.src = './flow-hijutsu.js';
-    script.defer = true;
+    script.onload = loadOptionalShadow;
+    script.onerror = loadOptionalShadow;
     document.body.appendChild(script);
+  } else {
+    loadOptionalShadow();
   }
 })();
