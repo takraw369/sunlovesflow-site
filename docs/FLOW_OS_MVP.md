@@ -76,7 +76,71 @@ Flow OSは「当たる診断」を目的にしない。
 - Shadow：5分類から変換ルールを返す
 - Role：人生 / 競技 / 指導 / 事業ごとに行動プロトコルを変える
 
-**現MVPはブラウザ内完結。入力データをサーバーへ送信・保存しない。**
+### Persistence modes
+
+Flow OSは同じ画面を2モードで使う。
+
+- **通常アクセス**：ブラウザ内だけで生成し、入力を保存しない
+- **専用リンク `?token=...`**：既存の期限付きFlow access tokenを検証し、継続支援用に結果とNEXT MOVEを保存する
+
+tokenはページ起動直後にURLから取り除き、`no-referrer` を指定して外部参照先へ漏らさない。
+保存処理に失敗した場合は、診断自体を止めずローカル生成へフォールバックする。
+
+## Canonical data flow — implemented 2026-09-21
+
+新しいProfile/Session系テーブルを乱立させず、既存 `flow_assessments` を診断セッションの正本として再利用する。
+
+```text
+contacts
+  ↓
+flow_assessments          # canonical session / answers / state snapshot
+  ↓
+flow_os_outputs           # canonical Flow Code interpretation
+  ↓
+flow_os_actions           # ACT / NEXT MOVE
+  ↓
+flow_os_reflections       # 実践後の状態変化・有効度
+```
+
+### `flow_os_outputs`
+
+- `assessment_id` は `flow_assessments` と1:1
+- engine versionを保持
+- CORE / WINNING / COLLAPSE / SHADOW / WEAPON / RESET / NEXT MOVEを保存
+- `full_payload` にその時点の生成結果を固定
+
+### `flow_os_actions`
+
+- assessmentから生まれた具体的行動を保持
+- `pending / done / skipped`
+- 将来、24–72時間後の振り返りやLINEフォローへ接続
+
+### `flow_os_reflections`
+
+- Action実施後の本人の一次情報を保存
+- state_before / state_after
+- effectiveness 1–5
+- 「当たったか」ではなく「行動と状態がどう変わったか」を学習材料にする
+
+新規3テーブルはRLS有効。クライアントから直接書かず、保存はサーバー側のEdge Functionを通す。認証済みユーザーが読む場合は、既存 `flow_assessments → contacts.auth_user_id` の所有関係を使う。
+
+## Edge Function — implemented
+
+`flow-os-submit`
+
+役割：
+
+1. 期限付きFlow access tokenを検証
+2. 入力を検証
+3. Flow Code 01をサーバー側で再計算
+4. `flow_assessments` を作成
+5. `flow_os_outputs` を作成
+6. `flow_os_actions` にNEXT MOVEを作成
+7. `contacts.metadata.current_flow_os` を更新
+8. `growth_observations` / `funnel_events` に接続
+9. canonical resultをフロントへ返す
+
+フロントは専用リンク時、このサーバー結果を表示する。通常アクセス時は同じロジックをローカル実行する。
 
 ## Ethics / safety rails
 
@@ -86,20 +150,19 @@ Flow OSは「当たる診断」を目的にしない。
 - 支配や操作へ使わない
 - 本人の尊厳と自己決定を優先する
 - Shadowは悪の肯定ではなく、自己観察と建設的な行動変換の材料として扱う
+- 保存モードでは、保存されることを画面上で明示する
 
 ## Phase roadmap
 
-### Phase 0 — DONE in this branch
+### Phase 0 — DONE
 
-Static MVP on existing `sunlovesflow-site`.
+Static Flow Code MVP。
 
 - `/flow-os/index.html`
 - `/flow-os/styles.css`
 - `/flow-os/app.js`
 
-目的：まず触れるものを出し、言葉・入力・出力の手触りを検証する。
-
-### Phase 1 — Validation
+### Phase 1 — IN PROGRESS
 
 10–30人で使う。
 
@@ -111,29 +174,33 @@ Static MVP on existing `sunlovesflow-site`.
 - 24–72時間後に行動変化があったか
 - アスリートなら練習・試合で再現できたか
 
-### Phase 2 — Supabase + AI
+### Phase 2A — DONE: Supabase foundation
 
-既存 `sunlovesflow-core` へ接続。
+- 既存 `flow_assessments` を再利用
+- `flow_os_outputs`
+- `flow_os_actions`
+- `flow_os_reflections`
+- Edge Function `flow-os-submit`
+- 専用tokenリンク時の保存導線
 
-推奨データモデル：
+### Phase 2B — NEXT: Reality learning loop
 
-```text
-flow_profiles
-flow_sessions
-flow_inputs
-flow_outputs
-flow_actions
-flow_reflections
-flow_lenses
-```
+- Action完了 / skipped
+- 24–72時間後のReflection
+- state_before / state_after
+- effectiveness 1–5
+- 同一人物の過去Flow Codeとの差分表示
 
-役割：
+ここが「診断 → 実践 → 結果 → 修正」を閉じるフェーズ。
 
-- Profileを継続保存
-- 過去セッションとの差分を見る
-- Flow CodeをAIで文章化
-- NEXT MOVEの実行 / 振り返りを追跡
-- 一般版とAthlete版を同じエンジンで分岐
+### Phase 2C — AI narrative
+
+AIは診断の真偽を決める役割ではなく、構造化されたレンズと本人の一次情報を、読みやすいFlow Codeへ翻訳する役割に限定する。
+
+- 既存構造化データを入力
+- 矛盾するレンズは断定せず併記・問いへ変換
+- 必ずRESET / NEXT MOVEへ落とす
+- engine / prompt versionを保存して再現可能にする
 
 ### Phase 3 — Full lens integration
 
