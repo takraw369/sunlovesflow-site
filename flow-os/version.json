@@ -1,0 +1,8 @@
+{
+  "product": "魂命術 Flow OS",
+  "version": "0.1.0-mvp",
+  "deployed_at_jst": "2026-09-22T07:20:00+09:00",
+  "source": "takraw369/sunlovesflow-site",
+  "branch": "main",
+  "note": "Cloudflare Pages production deploy trigger for /flow-os/"
+}
