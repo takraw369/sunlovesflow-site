@@ -45,6 +45,11 @@
   color: #8c8b8a;
 }
 
+/* 6 choices = 3 x 2. Avoid forcing a false shadow just to complete the form. */
+.shadow-options {
+  grid-template-columns: repeat(3, 1fr);
+}
+
 @media (max-width: 620px) {
   .birthdate-picker {
     grid-template-columns: 1.4fr .85fr .85fr;
@@ -56,5 +61,9 @@
     padding-left: 11px;
     padding-right: 30px;
     font-size: .95rem;
+  }
+
+  .shadow-options {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
