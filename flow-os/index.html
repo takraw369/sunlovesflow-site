@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./birthdate.css">
 </head>
 <body>
   <header class="hero">
@@ -71,10 +72,28 @@
               <span>呼び名</span>
               <input id="name" name="name" type="text" placeholder="例：MASA" maxlength="24" required>
             </label>
-            <label class="field">
+            <div class="field birthdate-field">
               <span>生年月日</span>
-              <input id="birthdate" name="birthdate" type="date" required>
-            </label>
+              <div class="birthdate-picker" role="group" aria-label="生年月日">
+                <div class="birthdate-part">
+                  <select id="birth-year" aria-label="生まれた年" required>
+                    <option value="">年</option>
+                  </select>
+                </div>
+                <div class="birthdate-part">
+                  <select id="birth-month" aria-label="生まれた月" required>
+                    <option value="">月</option>
+                  </select>
+                </div>
+                <div class="birthdate-part">
+                  <select id="birth-day" aria-label="生まれた日" required>
+                    <option value="">日</option>
+                  </select>
+                </div>
+              </div>
+              <input id="birthdate" name="birthdate" type="hidden">
+              <small class="birthdate-hint">年・月・日を順番に選択</small>
+            </div>
           </div>
 
           <div class="field-grid two">
@@ -204,6 +223,7 @@
     </div>
   </footer>
 
+  <script src="./birthdate.js"></script>
   <script src="./app.js"></script>
 </body>
 </html>
