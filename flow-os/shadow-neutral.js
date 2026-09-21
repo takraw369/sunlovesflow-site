@@ -38,4 +38,11 @@
       protocol: 'SEE：今のフラットさに気づく → NAME：「今は強い影なし」と確認する → BODY：呼吸・視線・足裏の基準値を覚える → CONVERT：安定を再現可能な武器にする → ACT：今のFlowを保ったまま次の一手へ進む。'
     };
   };
+
+  if (!document.querySelector('script[src="./flow-hijutsu.js"]')) {
+    const script = document.createElement('script');
+    script.src = './flow-hijutsu.js';
+    script.defer = true;
+    document.body.appendChild(script);
+  }
 })();
