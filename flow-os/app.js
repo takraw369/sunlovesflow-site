@@ -3,6 +3,7 @@ const resultSection = document.getElementById('result');
 const retryButton = document.getElementById('retry-button');
 const submitButton = form.querySelector('button[type="submit"]');
 const saveStatus = document.getElementById('save-status');
+const aiMirrorBox = document.getElementById('ai-mirror');
 const FLOW_OS_ENDPOINT = 'https://qydbtholbwbuwiswmqsr.supabase.co/functions/v1/flow-os-submit';
 
 const initialParams = new URLSearchParams(window.location.search);
@@ -158,8 +159,25 @@ function buildLocalResult(input) {
     },
     reset_protocol: { text: `${shadow.reset} ${bodyText}` },
     next_move: { text: `${roleData.move} 加えて、${shadow.action}` },
-    protocol: `SEE：${shadow.label}に気づく → NAME：「いま${shadow.label}がある」と言う → BODY：身体のサインへ戻る → CONVERT：「${shadow.weapon}」へ意味変換する → ACT：具体的な1動作にする。`
+    protocol: `SEE：${shadow.label}に気づく → NAME：「いま${shadow.label}がある」と言う → BODY：身体のサインへ戻る → CONVERT：「${shadow.weapon}」へ意味変換する → ACT：具体的な1動作にする。`,
+    ai_narrative: null
   };
+}
+
+function renderAiMirror(narrative) {
+  if (!aiMirrorBox) return;
+  if (!narrative || !narrative.mirror) {
+    aiMirrorBox.hidden = true;
+    return;
+  }
+
+  document.getElementById('ai-title').textContent = narrative.title || '今のあなたへの鏡';
+  document.getElementById('ai-mirror-text').textContent = narrative.mirror || '';
+  document.getElementById('ai-shadow').textContent = narrative.shadow_reframe || '';
+  document.getElementById('ai-body').textContent = narrative.body_cue || '';
+  document.getElementById('ai-next').textContent = narrative.next_move || '';
+  document.getElementById('ai-question').textContent = narrative.reflection_question || '';
+  aiMirrorBox.hidden = false;
 }
 
 function renderResult(name, result, persisted) {
@@ -174,6 +192,7 @@ function renderResult(name, result, persisted) {
   document.getElementById('reset-result').textContent = result.reset_protocol.text;
   document.getElementById('next-result').textContent = result.next_move.text;
   document.getElementById('protocol-result').textContent = result.protocol;
+  renderAiMirror(result.ai_narrative);
 
   if (saveStatus) {
     saveStatus.textContent = persisted
@@ -228,6 +247,9 @@ form.addEventListener('submit', async (event) => {
     if (flowToken) {
       const payload = await requestPersistedResult(input);
       renderResult(input.name, payload.result, true);
+      if (saveStatus && payload.mode === 'ai') {
+        saveStatus.textContent = 'FLOW CODEと「次の一手」を保存し、AI MIRRORも生成しました。次回以降の変化とつなげられます。';
+      }
     } else {
       renderResult(input.name, localResult, false);
     }
