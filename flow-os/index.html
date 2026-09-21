@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="魂命術 Flow OS｜自分という選手を、人生という競技でどう勝たせるか。">
+  <title>魂命術 Flow OS｜人生と勝負の取扱説明書</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-glow hero-glow-a"></div>
+    <div class="hero-glow hero-glow-b"></div>
+    <div class="wrap hero-inner">
+      <a class="brand" href="/">SUN LOVES FLOW / ACE</a>
+      <p class="eyebrow">SOUL × BODY × SHADOW × ACTION</p>
+      <h1>魂命術 <span>Flow OS</span></h1>
+      <p class="hero-copy">自分という選手を、<br class="mobile-break">人生という競技でどう勝たせるか。</p>
+      <p class="hero-sub">才能・思考・身体・感情・闇を「診断」で終わらせず、<br>今日の一手へ変換するための、人生と勝負の取扱説明書。</p>
+      <a class="primary-button" href="#flow-check">FLOW CODEを出す</a>
+      <p class="hero-note">MVP版｜入力はこの画面内だけで処理され、サーバー送信しません。</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="concept section-dark">
+      <div class="wrap">
+        <p class="section-kicker">CORE PHILOSOPHY</p>
+        <h2>光だけで勝つな。<br>闇も整えて、力に変えろ。</h2>
+        <div class="concept-grid">
+          <article class="concept-card">
+            <span>01</span><h3>SEE / NAME</h3><p>今の自分に何が起きているかを観察し、感情と状態に名前をつける。</p>
+          </article>
+          <article class="concept-card">
+            <span>02</span><h3>BODY</h3><p>呼吸・視線・足裏・重心など、思考ではなく身体に戻る。</p>
+          </article>
+          <article class="concept-card">
+            <span>03</span><h3>CONVERT</h3><p>怒り・恐怖・嫉妬・執着・孤独の意味を、破壊から推進へ変換する。</p>
+          </article>
+          <article class="concept-card">
+            <span>04</span><h3>ACT</h3><p>最後は必ず一つの行動へ。Flow OSは「当たる」より「動ける」を重視する。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="flow-check" class="diagnosis-section">
+      <div class="wrap diagnosis-layout">
+        <aside class="diagnosis-intro">
+          <p class="section-kicker">FLOW CODE 01</p>
+          <h2>今のあなたの<br>勝ち筋を可視化する。</h2>
+          <p>このMVPでは、現在状態・役割・影の感情・身体感覚・数秘レンズを組み合わせ、7項目の行動カルテを生成します。</p>
+          <ul>
+            <li>CORE｜いま使うべき核</li>
+            <li>WINNING PATTERN｜勝ち筋</li>
+            <li>COLLAPSE PATTERN｜崩れ筋</li>
+            <li>SHADOW｜影</li>
+            <li>WEAPON｜影から取り出す武器</li>
+            <li>RESET｜戻し方</li>
+            <li>NEXT MOVE｜今日の一手</li>
+          </ul>
+        </aside>
+
+        <form id="flow-form" class="flow-form">
+          <div class="field-grid two">
+            <label class="field">
+              <span>呼び名</span>
+              <input id="name" name="name" type="text" placeholder="例：MASA" maxlength="24" required>
+            </label>
+            <label class="field">
+              <span>生年月日</span>
+              <input id="birthdate" name="birthdate" type="date" required>
+            </label>
+          </div>
+
+          <div class="field-grid two">
+            <label class="field">
+              <span>今の主戦場</span>
+              <select id="role" name="role" required>
+                <option value="">選択してください</option>
+                <option value="life">人生・自己理解</option>
+                <option value="athlete">アスリート・競技</option>
+                <option value="coach">指導者・コーチ</option>
+                <option value="business">仕事・事業</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>MBTI（任意）</span>
+              <input id="mbti" name="mbti" type="text" placeholder="例：ENTP" maxlength="4" pattern="[A-Za-z]{4}">
+            </label>
+          </div>
+
+          <fieldset class="fieldset">
+            <legend>今、最も強く出ている「影」は？</legend>
+            <div class="shadow-options">
+              <label><input type="radio" name="shadow" value="anger" required><span>怒り<small>反発・苛立ち</small></span></label>
+              <label><input type="radio" name="shadow" value="jealousy"><span>嫉妬<small>比較・羨望</small></span></label>
+              <label><input type="radio" name="shadow" value="fear"><span>恐怖<small>不安・萎縮</small></span></label>
+              <label><input type="radio" name="shadow" value="attachment"><span>執着<small>手放せない</small></span></label>
+              <label><input type="radio" name="shadow" value="solitude"><span>孤独<small>閉じる・離れる</small></span></label>
+            </div>
+          </fieldset>
+
+          <div class="slider-block">
+            <div class="slider-row">
+              <label for="energy">身体エネルギー</label><output id="energy-output">3</output>
+              <input id="energy" type="range" min="1" max="5" value="3">
+            </div>
+            <div class="slider-row">
+              <label for="pressure">プレッシャー</label><output id="pressure-output">3</output>
+              <input id="pressure" type="range" min="1" max="5" value="3">
+            </div>
+            <div class="slider-row">
+              <label for="clarity">頭の明晰さ</label><output id="clarity-output">3</output>
+              <input id="clarity" type="range" min="1" max="5" value="3">
+            </div>
+          </div>
+
+          <label class="field">
+            <span>感情が強い時、身体のどこに出る？（任意）</span>
+            <input id="bodySignal" type="text" placeholder="例：胸が詰まる／肩が上がる／胃が重い" maxlength="80">
+          </label>
+
+          <label class="field">
+            <span>今いちばん越えたいものは？</span>
+            <textarea id="challenge" rows="3" placeholder="例：本番で焦らず、自分のプレーを出し切りたい" maxlength="180" required></textarea>
+          </label>
+
+          <button class="primary-button form-submit" type="submit">FLOW CODEを生成する</button>
+          <p class="form-disclaimer">占術・性格分類は自己観察のためのレンズとして扱います。医療・心理・適性の診断ではありません。</p>
+        </form>
+      </div>
+    </section>
+
+    <section id="result" class="result-section" hidden>
+      <div class="wrap">
+        <div class="result-head">
+          <div>
+            <p class="section-kicker">YOUR FLOW CODE</p>
+            <h2><span id="result-name"></span> の取扱説明書</h2>
+          </div>
+          <div class="code-badge"><span id="flow-number">0</span><small>FLOW NUMBER</small></div>
+        </div>
+
+        <div class="result-summary">
+          <p id="result-summary"></p>
+        </div>
+
+        <div class="result-grid">
+          <article class="result-card"><span class="result-index">01</span><h3>CORE</h3><p id="core-result"></p></article>
+          <article class="result-card"><span class="result-index">02</span><h3>WINNING PATTERN</h3><p id="winning-result"></p></article>
+          <article class="result-card"><span class="result-index">03</span><h3>COLLAPSE PATTERN</h3><p id="collapse-result"></p></article>
+          <article class="result-card shadow-card"><span class="result-index">04</span><h3>SHADOW</h3><p id="shadow-result"></p></article>
+          <article class="result-card weapon-card"><span class="result-index">05</span><h3>WEAPON</h3><p id="weapon-result"></p></article>
+          <article class="result-card"><span class="result-index">06</span><h3>RESET</h3><p id="reset-result"></p></article>
+          <article class="result-card next-card"><span class="result-index">07</span><h3>NEXT MOVE</h3><p id="next-result"></p></article>
+        </div>
+
+        <div class="protocol">
+          <p class="section-kicker">SHADOW ALCHEMY</p>
+          <h3>闇の変換プロトコル</h3>
+          <div class="protocol-flow">
+            <span>SEE</span><i>→</i><span>NAME</span><i>→</i><span>BODY</span><i>→</i><span>CONVERT</span><i>→</i><span>ACT</span>
+          </div>
+          <p id="protocol-result"></p>
+        </div>
+
+        <button id="retry-button" class="secondary-button" type="button">もう一度診断する</button>
+      </div>
+    </section>
+
+    <section class="roadmap section-dark">
+      <div class="wrap">
+        <p class="section-kicker">WHAT COMES NEXT</p>
+        <h2>このMVPから、Flow OS本体へ。</h2>
+        <div class="roadmap-grid">
+          <div><strong>NOW</strong><h3>FLOW CODE 01</h3><p>現在状態＋影＋身体＋数秘で、今の一手を出す。</p></div>
+          <div><strong>NEXT</strong><h3>FLOW OS診断</h3><p>西洋・インド占星術、四柱推命、九星、MBTI、エニアグラム、五行体質を統合。</p></div>
+          <div><strong>ATHLETE</strong><h3>闘魂OS</h3><p>Before / During / Afterで、勝負前・試合中・試合後の実践プロトコルへ。</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <p>魂命術 Flow OS — Sun Loves Flow / ACE</p>
+      <p>© 2026 MASA / Sun Loves Flow</p>
+    </div>
+  </footer>
+
+  <script src="./app.js"></script>
+</body>
+</html>
