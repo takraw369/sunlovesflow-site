@@ -1,6 +1,18 @@
 const form = document.getElementById('flow-form');
 const resultSection = document.getElementById('result');
 const retryButton = document.getElementById('retry-button');
+const submitButton = form.querySelector('button[type="submit"]');
+const saveStatus = document.getElementById('save-status');
+const FLOW_OS_ENDPOINT = 'https://qydbtholbwbuwiswmqsr.supabase.co/functions/v1/flow-os-submit';
+
+const initialParams = new URLSearchParams(window.location.search);
+const flowToken = initialParams.get('token');
+if (flowToken) {
+  initialParams.delete('token');
+  const query = initialParams.toString();
+  const cleanUrl = `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`;
+  window.history.replaceState({}, '', cleanUrl);
+}
 
 ['energy', 'pressure', 'clarity'].forEach((id) => {
   const input = document.getElementById(id);
@@ -111,26 +123,15 @@ function mbtiLens(value) {
   return `MBTIレンズでは、${energy}からエネルギーを整え、${info}を手掛かりにし、${decision}で判断し、${pace}があると動きやすい傾向を観察できる。`;
 }
 
-form.addEventListener('submit', (event) => {
-  event.preventDefault();
-
-  const name = document.getElementById('name').value.trim();
-  const birthdate = document.getElementById('birthdate').value;
-  const role = document.getElementById('role').value;
-  const mbti = document.getElementById('mbti').value;
-  const shadowKey = new FormData(form).get('shadow');
-  const energy = Number(document.getElementById('energy').value);
-  const pressure = Number(document.getElementById('pressure').value);
-  const clarity = Number(document.getElementById('clarity').value);
-  const bodySignal = document.getElementById('bodySignal').value.trim();
-  const challenge = document.getElementById('challenge').value.trim();
-
-  const shadow = shadowMap[shadowKey];
-  const roleData = roleMap[role];
-  const flowNumber = getFlowNumber(birthdate);
-  const state = stateLabel(energy, pressure, clarity);
-  const bodyText = bodySignal ? `あなたの場合は「${bodySignal}」がサイン。そこを早期警報として使う。` : '感情が強くなった時は、呼吸・顎・肩・足裏のどこが変わるかを最初の観察点にする。';
-  const mbtiText = mbtiLens(mbti);
+function buildLocalResult(input) {
+  const shadow = shadowMap[input.shadow];
+  const roleData = roleMap[input.role];
+  const flowNumber = getFlowNumber(input.birthdate);
+  const state = stateLabel(input.energy, input.pressure, input.clarity);
+  const bodyText = input.bodySignal
+    ? `あなたの場合は「${input.bodySignal}」がサイン。そこを早期警報として使う。`
+    : '感情が強くなった時は、呼吸・顎・肩・足裏のどこが変わるかを最初の観察点にする。';
+  const mbtiText = mbtiLens(input.mbti);
 
   let stateAdvice = '大きく変えず、今のリズムを保ちながら一つだけ精度を上げる。';
   if (state === '回復優先') stateAdvice = '今は出力を上げるより回復が先。睡眠・食事・呼吸・休息を「練習の一部」として扱う。';
@@ -138,20 +139,112 @@ form.addEventListener('submit', (event) => {
   if (state === '前進モード') stateAdvice = '状態は動かせる側。難度を一段上げるか、重要課題を先に処理すると勢いを成果へ変えやすい。';
   if (state === '設計モード') stateAdvice = '頭が使える状態。実行前に、目的・順序・やらないことを短く決めると強い。';
 
+  return {
+    flow_number: flowNumber,
+    state,
+    summary: `現在のStateは「${state}」。Flow Number ${flowNumber} のレンズでは「${numberLens[flowNumber]}」がテーマ。今越えたいものは「${input.challenge}」。`,
+    core: `${roleData.core}${mbtiText ? ` ${mbtiText}` : ''}`,
+    winning_pattern: `${roleData.winning} ${stateAdvice}`,
+    collapse_pattern: shadow.collapse,
+    shadow: {
+      key: input.shadow,
+      label: shadow.label,
+      truth: shadow.truth,
+      text: `${shadow.label}の奥には「${shadow.truth}」がある。影を悪者にせず、何を守ろうとしているのかを見る。`
+    },
+    weapon: {
+      label: shadow.weapon,
+      text: `${shadow.label}から取り出す武器は「${shadow.weapon}」。感情を消すのではなく、役割を与える。`
+    },
+    reset_protocol: { text: `${shadow.reset} ${bodyText}` },
+    next_move: { text: `${roleData.move} 加えて、${shadow.action}` },
+    protocol: `SEE：${shadow.label}に気づく → NAME：「いま${shadow.label}がある」と言う → BODY：身体のサインへ戻る → CONVERT：「${shadow.weapon}」へ意味変換する → ACT：具体的な1動作にする。`
+  };
+}
+
+function renderResult(name, result, persisted) {
   document.getElementById('result-name').textContent = name;
-  document.getElementById('flow-number').textContent = flowNumber;
-  document.getElementById('result-summary').textContent = `現在のStateは「${state}」。Flow Number ${flowNumber} のレンズでは「${numberLens[flowNumber]}」がテーマ。今越えたいものは「${challenge}」。`;
-  document.getElementById('core-result').textContent = `${roleData.core} ${mbtiText}`;
-  document.getElementById('winning-result').textContent = `${roleData.winning} ${stateAdvice}`;
-  document.getElementById('collapse-result').textContent = shadow.collapse;
-  document.getElementById('shadow-result').textContent = `${shadow.label}の奥には「${shadow.truth}」がある。影を悪者にせず、何を守ろうとしているのかを見る。`;
-  document.getElementById('weapon-result').textContent = `${shadow.label}から取り出す武器は「${shadow.weapon}」。感情を消すのではなく、役割を与える。`;
-  document.getElementById('reset-result').textContent = `${shadow.reset} ${bodyText}`;
-  document.getElementById('next-result').textContent = `${roleData.move} 加えて、${shadow.action}`;
-  document.getElementById('protocol-result').textContent = `SEE：${shadow.label}に気づく → NAME：「いま${shadow.label}がある」と言う → BODY：身体のサインへ戻る → CONVERT：「${shadow.weapon}」へ意味変換する → ACT：具体的な1動作にする。`;
+  document.getElementById('flow-number').textContent = result.flow_number;
+  document.getElementById('result-summary').textContent = result.summary;
+  document.getElementById('core-result').textContent = result.core;
+  document.getElementById('winning-result').textContent = result.winning_pattern;
+  document.getElementById('collapse-result').textContent = result.collapse_pattern;
+  document.getElementById('shadow-result').textContent = result.shadow.text;
+  document.getElementById('weapon-result').textContent = result.weapon.text;
+  document.getElementById('reset-result').textContent = result.reset_protocol.text;
+  document.getElementById('next-result').textContent = result.next_move.text;
+  document.getElementById('protocol-result').textContent = result.protocol;
+
+  if (saveStatus) {
+    saveStatus.textContent = persisted
+      ? 'このFLOW CODEと「次の一手」を保存しました。次回以降の変化とつなげられます。'
+      : 'この診断は端末内で生成しました。入力内容は保存していません。';
+    saveStatus.dataset.state = persisted ? 'saved' : 'local';
+  }
 
   resultSection.hidden = false;
   resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+async function requestPersistedResult(input) {
+  const response = await fetch(FLOW_OS_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token: flowToken, ...input })
+  });
+
+  let payload = null;
+  try { payload = await response.json(); } catch (_) {}
+  if (!response.ok || !payload?.ok || !payload?.result) {
+    const error = new Error(payload?.error || `http_${response.status}`);
+    error.code = payload?.error || `http_${response.status}`;
+    throw error;
+  }
+  return payload;
+}
+
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const input = {
+    name: document.getElementById('name').value.trim(),
+    birthdate: document.getElementById('birthdate').value,
+    role: document.getElementById('role').value,
+    mbti: document.getElementById('mbti').value.trim(),
+    shadow: new FormData(form).get('shadow'),
+    energy: Number(document.getElementById('energy').value),
+    pressure: Number(document.getElementById('pressure').value),
+    clarity: Number(document.getElementById('clarity').value),
+    bodySignal: document.getElementById('bodySignal').value.trim(),
+    challenge: document.getElementById('challenge').value.trim()
+  };
+
+  const localResult = buildLocalResult(input);
+  const originalLabel = submitButton.textContent;
+  submitButton.disabled = true;
+  submitButton.textContent = flowToken ? 'FLOW CODEを生成・保存中…' : 'FLOW CODEを生成中…';
+
+  try {
+    if (flowToken) {
+      const payload = await requestPersistedResult(input);
+      renderResult(input.name, payload.result, true);
+    } else {
+      renderResult(input.name, localResult, false);
+    }
+  } catch (error) {
+    console.warn('Flow OS persistence unavailable; using local result.', error);
+    renderResult(input.name, localResult, false);
+    if (saveStatus && flowToken) {
+      const expired = error?.code === 'expired_token' || error?.code === 'invalid_token';
+      saveStatus.textContent = expired
+        ? '専用リンクの有効期限を確認できなかったため、今回は端末内だけで生成しました。'
+        : '保存処理につながらなかったため、今回は端末内だけで生成しました。';
+      saveStatus.dataset.state = 'fallback';
+    }
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = originalLabel;
+  }
 });
 
 retryButton.addEventListener('click', () => {
