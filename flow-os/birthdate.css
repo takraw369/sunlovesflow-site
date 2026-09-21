@@ -1,0 +1,60 @@
+.birthdate-field { grid-column: auto; }
+
+.birthdate-picker {
+  display: grid;
+  grid-template-columns: 1.35fr .9fr .9fr;
+  gap: 10px;
+}
+
+.birthdate-part {
+  position: relative;
+}
+
+.birthdate-part select {
+  width: 100%;
+  min-height: 50px;
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 13px 38px 13px 14px;
+  border: 1px solid #d8d0c3;
+  border-radius: 13px;
+  background:
+    linear-gradient(45deg, transparent 50%, #6f6a61 50%) calc(100% - 17px) 21px/5px 5px no-repeat,
+    linear-gradient(135deg, #6f6a61 50%, transparent 50%) calc(100% - 12px) 21px/5px 5px no-repeat,
+    #fff;
+  color: #1a2333;
+  font-weight: 700;
+  outline: none;
+  cursor: pointer;
+}
+
+.birthdate-part select:focus {
+  border-color: var(--sun-2);
+  box-shadow: 0 0 0 3px rgba(217,123,11,.1);
+}
+
+.birthdate-part select:invalid,
+.birthdate-part select:has(option[value=""]:checked) {
+  color: #8a8d91;
+}
+
+.birthdate-hint {
+  margin: 7px 2px 0;
+  font-size: .7rem;
+  line-height: 1.5;
+  color: #8c8b8a;
+}
+
+@media (max-width: 620px) {
+  .birthdate-picker {
+    grid-template-columns: 1.4fr .85fr .85fr;
+    gap: 7px;
+  }
+
+  .birthdate-part select {
+    min-height: 52px;
+    padding-left: 11px;
+    padding-right: 30px;
+    font-size: .95rem;
+  }
+}
