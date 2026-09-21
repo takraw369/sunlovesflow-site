@@ -1,8 +1,9 @@
 {
   "product": "魂命術 Flow OS",
-  "version": "0.1.0-mvp",
+  "version": "0.2.0-flow-hijutsu",
   "deployed_at_jst": "2026-09-22T07:20:00+09:00",
   "source": "takraw369/sunlovesflow-site",
   "branch": "main",
-  "note": "Cloudflare Pages production deploy trigger for /flow-os/"
+  "features": ["birthdate-select", "neutral-baseline", "flow-hijutsu", "9-year-wave", "12-month-wave"],
+  "note": "Flow Hijutsu numerology cycles added; Cloudflare Pages production deploy trigger"
 }
