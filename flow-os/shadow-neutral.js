@@ -39,6 +39,28 @@
     };
   };
 
+  if (typeof requestPersistedResult === 'function') {
+    const baseRequestPersistedResult = requestPersistedResult;
+    requestPersistedResult = async function requestPersistedResultWithNeutral(input) {
+      if (input.shadow !== 'neutral') return baseRequestPersistedResult(input);
+
+      const response = await fetch('https://qydbtholbwbuwiswmqsr.supabase.co/functions/v1/flow-os-neutral-submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: flowToken, ...input })
+      });
+
+      let payload = null;
+      try { payload = await response.json(); } catch (_) {}
+      if (!response.ok || !payload?.ok || !payload?.result) {
+        const error = new Error(payload?.error || `http_${response.status}`);
+        error.code = payload?.error || `http_${response.status}`;
+        throw error;
+      }
+      return payload;
+    };
+  }
+
   function loadOptionalShadow() {
     if (document.querySelector('script[src="./shadow-optional.js"]')) return;
     const optional = document.createElement('script');
