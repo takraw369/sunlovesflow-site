@@ -1,4 +1,4 @@
-name: Want Return Quest
+name: Want Return Quest Check
 
 on:
   push:
@@ -12,17 +12,27 @@ on:
       - "quest/want-return/**"
       - ".github/workflows/want-return.yml"
 
+permissions:
+  contents: read
+
+concurrency:
+  group: want-return-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Check shared script
+
+      - name: Check JavaScript
         run: node --check quest/want-return/app.js
-      - name: Check all day pages
+
+      - name: Check required assets and day routes
         run: |
           test -f quest/want-return/index.html
           test -f quest/want-return/styles.css
@@ -32,9 +42,10 @@ jobs:
             grep -q "data-day=\"$day\"" "quest/want-return/day/$day/index.html"
             grep -q "../../app.js" "quest/want-return/day/$day/index.html"
           done
-      - name: Guard browser code
+
+      - name: Guard accidental secrets in public quest files
         run: |
-          if grep -Eiq 'SUPABASE_SERVICE_ROLE_KEY|LINE_CHANNEL_ACCESS_TOKEN|LINE_CHANNEL_SECRET' quest/want-return/app.js quest/want-return/day/*/index.html; then
-            echo 'Secret reference found in public quest assets'
+          if grep -R -Eiq 'SUPABASE_SERVICE_ROLE_KEY|LINE_CHANNEL_ACCESS_TOKEN|LINE_CHANNEL_SECRET|HARNESS_API_KEY' quest/want-return; then
+            echo 'Potential secret reference found in public quest files'
             exit 1
           fi
