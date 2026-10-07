@@ -1,0 +1,46 @@
+{
+  "id": "voice-01-iroha-young-female",
+  "version": "0.2",
+  "locale": "ja-JP",
+  "provider": {
+    "primary": "elevenlabs",
+    "source": "voice-library",
+    "display_name": "Iroha",
+    "descriptor": "Young Female",
+    "voice_id": null,
+    "quality_model": "eleven_v3",
+    "humanity_fallback": "voice-changer-speech-to-speech",
+    "fallback_audition": "gemini-3.1-flash-tts"
+  },
+  "playback": {
+    "mode": "static-first",
+    "preload": "auto",
+    "dynamic_tts": false,
+    "browser_system_tts": false
+  },
+  "assets": {
+    "start": "/body-flow/media/voice/voice01/start.mp3",
+    "workStart": "/body-flow/media/voice/voice01/work-start.mp3",
+    "count3": "/body-flow/media/voice/voice01/count-3.mp3",
+    "rest": "/body-flow/media/voice/voice01/rest.mp3",
+    "next": "/body-flow/media/voice/voice01/next.mp3",
+    "recovery": "/body-flow/media/voice/voice01/recovery.mp3",
+    "finish": "/body-flow/media/voice/voice01/finish.mp3"
+  },
+  "casting": {
+    "status": "candidate-selected-id-pending",
+    "selected_by": "MASA",
+    "selected_on": "2026-09-10",
+    "hard_gate": "sounds-human-within-first-second",
+    "next_gate": "pin-exact-elevenlabs-voice-id-and-generate-core-cues",
+    "reject": [
+      "robotic",
+      "announcer-like",
+      "anime-like",
+      "customer-service-like",
+      "overly-cute",
+      "uniform-sentence-endings",
+      "unnatural-japanese-pauses"
+    ]
+  }
+}
